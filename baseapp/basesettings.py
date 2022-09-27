@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'baseapp',
         'USER': pgdb_user,
-        'PASSWORD': '123456ab',
+        'PASSWORD': pgdb_password,
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -139,10 +139,4 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-MEDIA_ROOT = (BASE_DIR/'media')
-
-MEDIA_URL = '//media/'
-
 LOGIN_REDIRECT_URL = 'dashboard-index'
-
-LOGIN_URL='user-login'

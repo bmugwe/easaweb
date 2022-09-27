@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path,include
 from user import views as user_view
 from django.contrib.auth import views as auth_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 from dashboard import views
 
@@ -25,5 +27,7 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('register/', user_view.register, name='user-register'),
     path('', auth_view.LoginView.as_view(template_name='user/login.html'), name='user-login'),
-    path('logout/', auth_view.LogoutView.as_view(template_name='user/logout.html'), name='user-logout')
-]
+    path('logout/', auth_view.LogoutView.as_view(template_name='user/logout.html'), name='user-logout'),
+    path('profile', views.profile, name='user-profile'),
+
+] + static(settings.MEDIA_URL, document_roor=settings.MEDIA_ROOT)
