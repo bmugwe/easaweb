@@ -5,6 +5,10 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+def homepage(request):
+    context = {}
+    return render(request, 'user/homepage.html',context)
+
 
 @login_required
 def index(request):
