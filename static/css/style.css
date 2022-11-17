@@ -1062,3 +1062,7 @@ body{
 	color: #f4f4f4;
 	margin-bottom: 3px;
 }
+.charges-inv, .value-inv {
+	border: solid 1px;
+	padding: 5px;
+}

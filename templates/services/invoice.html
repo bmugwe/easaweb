@@ -12,30 +12,31 @@
                 <div class="row">
                     <div class="col-md-6">  
                         <div class="formgroup">
-                            <label for="shipperCompnay">Company Name</label>
-                            <input type="text" class="form-control" id="shipperCompnay" placeholder="Company Name">
+                            <label for="shipperCompnay">Company Name</label><br>
+                            {{ form.from_companyname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperAddress">Address</label>
-                            <input type="text" class="form-control" id="shipperAddress" placeholder="Address">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperTown">Town</label>
-                            <input type="text" class="form-control" id="shipperTown" placeholder="Town">
+                            {{ form.from_personname}}
+
                         </div>
                     </div>
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="shipperCompnay">Contact Person</label>
-                            <input type="text" class="form-control" id="shipperCompnay" placeholder="Company Name">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Phone Number</label>
-                            <input type="phone" class="form-control" id="shipperPhoneNo" placeholder="Phone Number">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Email Address</label>
-                            <input type="email" class="form-control" id="shipperPhoneNo" placeholder="Email Address">
+                            {{ form.from_personname}}
                         </div>
                     </div>
                 </div>
@@ -47,22 +48,22 @@
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="ConsigneeName">Consignee Name</label>
-                            <input type="text" class="form-control" id="ConsigneeName" placeholder="Consignee Name">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperAddress">Address</label>
-                            <input type="text" class="form-control" id="shipperAddress" placeholder="Address">
+                            {{ form.from_personname}}
                         </div>
                         
                     </div>
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Phone Number</label>
-                            <input type="text" class="form-control" id="shipperPhoneNo" placeholder="Phone Number">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperTown">Town</label>
-                            <input type="text" class="form-control" id="shipperTown" placeholder="Town">
+                            {{ form.from_personname}}
                         </div>
                     </div>
                 </div>
@@ -78,13 +79,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Country From: </label>
-                            <input type="text" class="form-control">
+                            {{ form.from_countries}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">City From: </label>
-                            <input type="text" class="form-control">
+                            {{ form.from_town}}
                         </div>                        
                     </div>
                 </div>
@@ -95,13 +96,13 @@
                     <div class="col md-6">
                         <div class="form-group">
                             <label for="">Country To: </label>
-                            <input type="text" class="form-control">
+                            {{ form.to_countries}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">City To: </label>
-                            <input type="text" class="form-control">
+                            {{ form.to_town}}
                         </div>
                     </div>
                 </div>
@@ -113,8 +114,8 @@
             Products to ship: 
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-10">
+                    <!-- <div class="col-md-1"></div> -->
+                    <div class="col-md-12">
                         <table class="table table-light">
                             <thead>
                               <tr>
@@ -128,30 +129,30 @@
                             <tbody>
                               <tr>
                                 <td>
-                                    <input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Kind of Package">
+                                    {{ form.package_kind}}
                                 </td>
                                 <td>
-                                    <input type="text-area" class="form-control mb-2 mr-sm-2" id="" placeholder="Description">
+                                    {{ form.description }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Weight (KGs)">
+                                    {{ form.weight }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Length">
+                                    {{ form.length }}
                                     <!-- <br> -->
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Width">
+                                    {{ form.width }}
                                     <!-- <br> -->
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Height">
+                                    {{ form.height }}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary">Add</button>
-                                    <button type="button" class="btn btn-secondary">Clear</button>
+                                    <button type="button" class="btn btn-primary m-1">Add</button>
+                                    <button type="button" class="btn btn-secondary m-1">Clear</button>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                     </div>
-                    <div class="col-md-1"></div>
+                    <!-- <div class="col-md-1"></div> -->
                 </div>
             </div>
         </div>
@@ -185,11 +186,12 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     AIR FREIGHT CHARGES
                 </div>
-                    <div class="form-check">
+                    {{form.airfreight_charges}}
+                    <!-- <div class="form-check">
                     <input class="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" checked>
                     <label class="form-check-label" for="gridRadios1">
                        Prepaid
@@ -200,14 +202,15 @@
                     <label class="form-check-label" for="gridRadios2">
                         Collect
                     </label>
-                    </div>
+                    </div> -->
                 <div class="s-footer">(mark one to apply) (If Service Available)</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     OTHER CHARGES
                 </div>
-                    <div class="form-check">
+                    {{form.other_charges}}
+                    <!-- <div class="form-check">
                         <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
                         <label class="form-check-label" for="gridRadios1">
                            Prepaid
@@ -218,14 +221,14 @@
                         <label class="form-check-label" for="gridRadios2">
                             Collect
                         </label>
-                    </div>
+                    </div> -->
                 <div class="s-footer">(mark one to apply) (If Service Available)</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     INSURANCE - AMOUNT REQUESTED
                 </div>
-                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="KES">
+                    {{form.insur_amount}}
             </div>
         </div>
 
@@ -233,19 +236,19 @@
             <div class="col-md-8">
                 <h4>Declared Value: </h4>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 value-inv">
                         For Carriage: 
                         <br>
                         <h3>NVD</h3>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 value-inv">
                         For Customes: 
                         <br>
                         <h3>NCV</h3>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 value-inv">
                 Date : <br>
 
                 Signature: <br>
@@ -254,15 +257,22 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h4>HANDLING INFORMATION AND REMARKS</h4> <br>
                 <div class="form-group">
-                    <div class="form-control">
-                        <input type="textarea">
+                    <div class="">
+                        <textarea name="" id="" cols="100" rows="5"></textarea>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6"></div>
+            <!-- <div class="col-md-6"></div> -->
+        </div>
+        <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-md-5"></div>
         </div>
 </form>
 </div>
