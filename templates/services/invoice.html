@@ -2,9 +2,10 @@
 {% block title %} Letter of Instruction {% endblock %}
 
 {% block content %} 
-<div class="container" style="margin-top: 7rem ;">
+<div class="container" style="margin-top: 8rem ; margin-bottom: 5px; border: solid 1px ; ">
     <h3>Shipper's Letter of Instructions for issuing Air WayBill</h3>
-    <form method="POST">
+    <form action="" method="post" data-parsley-validate="true">
+        {% csrf_token %}
         <div class="row">
             <div class="col-md-6 shippers">
                 <h4>Shipper:</h4>                
@@ -12,30 +13,31 @@
                 <div class="row">
                     <div class="col-md-6">  
                         <div class="formgroup">
-                            <label for="shipperCompnay">Company Name</label>
-                            <input type="text" class="form-control" id="shipperCompnay" placeholder="Company Name">
+                            <label for="shipperCompnay">Company Name</label><br>
+                            {{ form.from_companyname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperAddress">Address</label>
-                            <input type="text" class="form-control" id="shipperAddress" placeholder="Address">
+                            {{ form.from_address}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperTown">Town</label>
-                            <input type="text" class="form-control" id="shipperTown" placeholder="Town">
+                            {{ form.from_town}}
+
                         </div>
                     </div>
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="shipperCompnay">Contact Person</label>
-                            <input type="text" class="form-control" id="shipperCompnay" placeholder="Company Name">
+                            {{ form.from_personname}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Phone Number</label>
-                            <input type="phone" class="form-control" id="shipperPhoneNo" placeholder="Phone Number">
+                            {{ form.from_phonenumber}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Email Address</label>
-                            <input type="email" class="form-control" id="shipperPhoneNo" placeholder="Email Address">
+                            {{ form.from_emailaddress}}
                         </div>
                     </div>
                 </div>
@@ -47,22 +49,22 @@
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="ConsigneeName">Consignee Name</label>
-                            <input type="text" class="form-control" id="ConsigneeName" placeholder="Consignee Name">
+                            {{ form.to_consigneeename}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperAddress">Address</label>
-                            <input type="text" class="form-control" id="shipperAddress" placeholder="Address">
+                            {{ form.to_address}}
                         </div>
                         
                     </div>
                     <div class="col-md-6">  
                         <div class="formgroup">
                             <label for="shipperPhoneNo">Phone Number</label>
-                            <input type="text" class="form-control" id="shipperPhoneNo" placeholder="Phone Number">
+                            {{ form.to_phonenumber}}
                         </div>
                         <div class="formgroup">
                             <label for="shipperTown">Town</label>
-                            <input type="text" class="form-control" id="shipperTown" placeholder="Town">
+                            {{ form.to_town}}
                         </div>
                     </div>
                 </div>
@@ -78,13 +80,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">Country From: </label>
-                            <input type="text" class="form-control">
+                            {{ form.from_countries}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">City From: </label>
-                            <input type="text" class="form-control">
+                            {{ form.from_town}}
                         </div>                        
                     </div>
                 </div>
@@ -95,13 +97,13 @@
                     <div class="col md-6">
                         <div class="form-group">
                             <label for="">Country To: </label>
-                            <input type="text" class="form-control">
+                            {{ form.to_countries}}
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="">City To: </label>
-                            <input type="text" class="form-control">
+                            {{ form.to_town}}
                         </div>
                     </div>
                 </div>
@@ -113,8 +115,8 @@
             Products to ship: 
             <div class="col-md-12">
                 <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-10">
+                    <!-- <div class="col-md-1"></div> -->
+                    <div class="col-md-12">
                         <table class="table table-light">
                             <thead>
                               <tr>
@@ -128,30 +130,30 @@
                             <tbody>
                               <tr>
                                 <td>
-                                    <input type="text" class="form-control mb-2 mr-sm-2" id="" placeholder="Kind of Package">
+                                    {{ form.package_kind}}
                                 </td>
                                 <td>
-                                    <input type="text-area" class="form-control mb-2 mr-sm-2" id="" placeholder="Description">
+                                    {{ form.description }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Weight (KGs)">
+                                    {{ form.weight }}
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Length">
+                                    {{ form.length }}
                                     <!-- <br> -->
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Width">
+                                    {{ form.width }}
                                     <!-- <br> -->
-                                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="Height">
+                                    {{ form.height }}
                                 </td>
                                 <td>
-                                    <button type="button" class="btn btn-primary">Add</button>
-                                    <button type="button" class="btn btn-secondary">Clear</button>
+                                    <button type="button" class="btn btn-primary m-1">Add</button>
+                                    <button type="button" class="btn btn-secondary m-1">Clear</button>
                                 </td>
                               </tr>
                             </tbody>
                           </table>
                     </div>
-                    <div class="col-md-1"></div>
+                    <!-- <div class="col-md-1"></div> -->
                 </div>
             </div>
         </div>
@@ -185,11 +187,12 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     AIR FREIGHT CHARGES
                 </div>
-                    <div class="form-check">
+                    {{form.airfreight_charges}}
+                    <!-- <div class="form-check">
                     <input class="form-check-input" type="radio" name="gridRadios1" id="gridRadios1" value="option1" checked>
                     <label class="form-check-label" for="gridRadios1">
                        Prepaid
@@ -200,14 +203,15 @@
                     <label class="form-check-label" for="gridRadios2">
                         Collect
                     </label>
-                    </div>
+                    </div> -->
                 <div class="s-footer">(mark one to apply) (If Service Available)</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     OTHER CHARGES
                 </div>
-                    <div class="form-check">
+                    {{form.other_charges}}
+                    <!-- <div class="form-check">
                         <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
                         <label class="form-check-label" for="gridRadios1">
                            Prepaid
@@ -218,14 +222,14 @@
                         <label class="form-check-label" for="gridRadios2">
                             Collect
                         </label>
-                    </div>
+                    </div> -->
                 <div class="s-footer">(mark one to apply) (If Service Available)</div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 charges-inv">
                 <div class="s-title">
                     INSURANCE - AMOUNT REQUESTED
                 </div>
-                    <input type="number" class="form-control mb-2 mr-sm-2" id="" placeholder="KES">
+                    {{form.insur_amount}}
             </div>
         </div>
 
@@ -233,37 +237,51 @@
             <div class="col-md-8">
                 <h4>Declared Value: </h4>
                 <div class="row">
-                    <div class="col-md-6">
-                        For Carriage: 
-                        <br>
-                        <h3>NVD</h3>
+                    <div class="col-md-6 value-inv">
+                        For Carriage:  <b>NVD</b> 
+                        {{form.nvd}}
                     </div>
-                    <div class="col-md-6">
-                        For Customes: 
-                        <br>
-                        <h3>NCV</h3>
+                    <div class="col-md-6 value-inv">
+                        For Customers:   <b>NCV</b>
+                         {{form.ncv}}
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 value-inv">
                 Date : <br>
-
-                Signature: <br>
-                    I approve : 
+                {{form.disbursement_date}}
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-10">
+                        Signature: 
+                    {{form.accept}}
+                        I approve 
+                    </div>
+                </div>
+                
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <h4>HANDLING INFORMATION AND REMARKS</h4> <br>
                 <div class="form-group">
-                    <div class="form-control">
-                        <input type="textarea">
+                    <div class="">
+                        {{form.handling_info}}
                     </div>
                 </div>
             </div>
-            <div class="col-md-6"></div>
+            <!-- <div class="col-md-6"></div> -->
         </div>
-</form>
+        <div class="row m-2">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <input type="submit" class="btn btn-primary" value="Submit">
+
+                <a href="javascript:history.go(-1)" class="btn btn-secondary">Cancel</a>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </form>
 </div>
 {% endblock %}
