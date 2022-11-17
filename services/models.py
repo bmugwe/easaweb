@@ -6,18 +6,17 @@ import uuid
 # Create your models here.
 
 class InvoiceLetter(models.Model):
-    inv_id = models.UUIDField(primary_key=True, default=uuid.uui4, editable=False)
+    inv_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     from_companyname = models.CharField(max_length=150)
     from_personname = models.CharField(max_length=150)
     from_address = models.CharField(max_length=150)
     from_phonenumber = models.CharField(max_length=150)
-    from_town = models.CharField(max_length=150)
+    from_sendertown = models.CharField(max_length=150)
     from_emailaddress = models.CharField(max_length=150)
     to_consigneeename = models.CharField(max_length=150)
     to_phonenumber = models.CharField(max_length=150)
     to_address = models.CharField(max_length=150)
-    to_town = models.CharField(max_length=150)
-    from_personname = models.CharField(max_length=150)
+    to_receivertown = models.CharField(max_length=150)
     from_countries = models.CharField(max_length=150)
     from_town = models.CharField(max_length=150)
     to_countries = models.CharField(max_length=150)
@@ -40,7 +39,7 @@ class InvoiceLetter(models.Model):
 
 
     class Meta:
-        db_tale = "invoice_letter"
+        db_table = "invoice_letter"
 
     def __unicode__(self):
         return str(self.inv_id, self.from_companyname)
