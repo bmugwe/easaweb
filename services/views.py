@@ -4,18 +4,23 @@ from .forms import Invoicetemplate
 # Create your views here.
 def servicesInv(request):
 
-    data =  {
-        "from_companyname": "Equitexy Business Solutions",
-        "from_personname": 'Boniface Mugwe'
-    }
-    form = Invoicetemplate(data=data)
+    if request.method == 'POST':
+        sent_data = request.POST
+        print(sent_data)
 
-    context = {
-        'form': form,
-        'data': data
-    }
+    else:
+        data =  {
+            "from_companyname": "Equitexy Business Solutions",
+            "from_personname": 'Boniface Mugwe'
+        }
+        form = Invoicetemplate(data=data)
 
-    return render(request, 'services/invoice.html', context)
+        context = {
+            'form': form,
+            'data': data
+        }
+
+        return render(request, 'services/invoice.html', context)
 
 def servicesAirway(request):
     context = {}
