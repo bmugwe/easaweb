@@ -2,6 +2,9 @@ from contextlib import redirect_stderr
 import re
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+
+
 from .forms import CreateUserForm
 
 # Create your views here.
@@ -11,7 +14,9 @@ def register(request):
         form=CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('dashboard-index')
+        
+        messages.success(request, f"User created successfully. Please log in :")
+        return redirect('dashboard-index')
     else:
         form=CreateUserForm()
 

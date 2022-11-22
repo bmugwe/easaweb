@@ -3,6 +3,10 @@ from curses.ascii import HT
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+
+from services.models import InvoiceLetter, airwaybill
+
 
 # Create your views here.
 def homepage(request):
@@ -12,7 +16,12 @@ def homepage(request):
 
 @login_required
 def index(request):
-    context = {}
+    currentInvoice = InvoiceLetter.objects.filter(user_saved_by_id = "1")
+
+    print(currentInvoice)
+    context= {
+        "currentInvoice": currentInvoice
+    }
     return render(request, 'dashboard/index.html',context)
 
 @login_required
@@ -21,11 +30,27 @@ def staff(request):
 
 @login_required
 def products(request):
-    return render(request, 'dashboard/products.html')
+    currentInvoice = airwaybill.objects.filter(is_void=False)
+    currentInvoice = currentInvoice.filter(is_deleted=False)
+    currentInvoice = currentInvoice.filter(is_processed=False)
+    print(currentInvoice)
+    context= {
+        "currentInvoice": currentInvoice
+    }
+
+
+    return render(request, 'dashboard/products.html', context)
 
 @login_required
 def orders(request):
-    return render(request, 'dashboard/orders.html')
+    currentInvoice = InvoiceLetter.objects.filter(is_void=False)
+    currentInvoice = currentInvoice.filter(is_deleted=False)
+    currentInvoice = currentInvoice.filter(is_processed=False)
+    print(currentInvoice)
+    context= {
+        "currentInvoice": currentInvoice
+    }
+    return render(request, 'dashboard/orders.html', context)
 
 @login_required
 def profile(request):
