@@ -2,11 +2,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.utils import timezone
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 
-from .forms import Invoicetemplate
 
-from .models import InvoiceLetter
+from .forms import Invoicetemplate, Airwaybill
+
+from .models import InvoiceLetter, airwaybill
 
 # Create your views here.
 def servicesInv(request):
@@ -33,6 +36,7 @@ def servicesInv(request):
                 to_countries = sent_data.get('to_countries'),
                 to_town = sent_data.get('to_town'),
                 package_kind = sent_data.get('package_kind'),
+                quantity = sent_data.get('quantity'),
                 description = sent_data.get('description'),
                 weight  = sent_data.get('weight'),
                 length = sent_data.get('length'),
@@ -47,6 +51,8 @@ def servicesInv(request):
             ).save()
         except Exception as e:
             print(f"Error saving the data:  {e}")
+        
+        messages.success(request, "The invoice Letter has been addes successfully")
         return redirect('services-invoice')
     else:
         data =  {
@@ -61,7 +67,74 @@ def servicesInv(request):
     
         return render(request, 'services/invoice.html', context)
 
-def servicesAirway(request):
-    context = {}
+@login_required
+def servicesAirway(request, id):
 
-    return render(request, 'services/airwaybill.html', context)
+    if request.method == 'POST':
+        sent_data = request.POST
+        print(sent_data)
+        try:
+            airwaybill(
+                from_companyname = sent_data.get('from_companyname'),
+                from_personname = sent_data.get('from_personname'),
+                from_address = sent_data.get('from_address'),
+                from_phonenumber = sent_data.get('from_phonenumber'),
+                from_sendertown = sent_data.get('from_town'),
+                from_emailaddress = sent_data.get('from_emailaddress'),
+                to_consigneeename = sent_data.get('to_consigneeename'),
+                to_phonenumber = sent_data.get('to_phonenumber'),
+                to_address = sent_data.get('to_address'),
+                to_receivertown = sent_data.get('to_town'),
+                # from_personname = sent_data.get('from_personname'),
+                from_countries = sent_data.get('from_countries'),
+                from_town = sent_data.get('from_town'),
+                to_countries = sent_data.get('to_countries'),
+                to_town = sent_data.get('to_town'),
+                package_kind = sent_data.get('package_kind'),
+                quantity = sent_data.get('quantity'),
+                description = sent_data.get('description'),
+                weight  = sent_data.get('weight'),
+                length = sent_data.get('length'),
+                width = sent_data.get('width'),
+                height = sent_data.get('height'),
+                airfreight_charges = sent_data.get('airfreight_charges'),
+                other_charges = sent_data.get('other_charges'),
+                insur_amount = sent_data.get('insur_amount'),
+                nvd = sent_data.get('nvd'),
+                ncv = sent_data.get('ncv'),
+                handling_info = sent_data.get('handling_info'),
+                user_saved_by_id = '1'
+            ).save()
+
+            invoice_p = InvoiceLetter.objects.get(inv_id=id)
+            invoice_p.is_processed = True
+            invoice_p.save()
+
+            messages.success(request, "The Airway bill has been added successfully")
+
+        except Exception as e:
+            print(f"Error saving the data:  {e}")
+            messages.error(request, f"The Airway bill did not save {e}")
+
+        
+        return redirect('dashboard-products')
+    else:
+        invoicedata = InvoiceLetter.objects.filter(inv_id = id)
+        # print(invoicedata)
+        # print(dir(invoicedata))
+        invoicedatas = invoicedata.values()
+        print(invoicedatas)
+        data = {}
+        for invoice in invoicedatas:
+            for inv in invoice:
+                data[inv]=invoice.get(inv)
+
+        print(data)
+        form = Airwaybill(data=data)
+
+        context = {
+            'form': form,
+
+        }
+
+        return render(request, 'services/airwaybill.html', context)

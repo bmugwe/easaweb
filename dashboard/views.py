@@ -3,6 +3,8 @@ from curses.ascii import HT
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+from services.models import InvoiceLetter
+from django.contrib.auth.models import User
 
 # Create your views here.
 def homepage(request):
@@ -25,7 +27,14 @@ def products(request):
 
 @login_required
 def orders(request):
-    return render(request, 'dashboard/orders.html')
+    currentInvoice = InvoiceLetter.objects.filter(is_void=False)
+    currentInvoice = currentInvoice.filter(is_deleted=False)
+    currentInvoice = currentInvoice.filter(is_processed=False)
+    print(currentInvoice)
+    context= {
+        "currentInvoice": currentInvoice
+    }
+    return render(request, 'dashboard/orders.html', context)
 
 @login_required
 def profile(request):

@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('invoice', views.servicesInv, name='services-invoice'),
-    path('airwaybill', views.servicesAirway, name='services-airway'),
+    path('airwaybill/<uuid:id>/', views.servicesAirway, name='services_airway'),
 ]
