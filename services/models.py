@@ -65,6 +65,7 @@ class InvoiceLetter(models.Model):
 
 class airwaybill(models.Model):
     awb_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    inv_id = models.ForeignKey(InvoiceLetter, verbose_name=("inv_awb_fk"), on_delete=models.CASCADE)
     from_companyname = models.CharField(max_length=150)
     from_personname = models.CharField(max_length=150)
     from_address = models.CharField(max_length=150)

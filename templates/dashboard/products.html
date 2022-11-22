@@ -49,42 +49,27 @@
                 <thead class="bg-info">
                     <tr class="text-white">
                         <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Category</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Activity</th>
+                        <th scope="col">Sent By</th>
+                        <th scope="col">To Country</th>
+                        <th scope="col">Sent To</th>
+                        <th scope="col">To Country</th>
+                        <th scope="col">Time created</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for invoice in currentInvoice %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row">{{forloop.counter}}</th>
+                        <td>{{invoice.from_personname}}</td>
+                        <td>{{invoice.from_town}}</td>
+                        <td>{{invoice.to_consigneeename}}</td>
+                        <td>{{invoice.to_town}}</td>
+                        <td>{{invoice.timestamp_created}}</td>
                         <td>
-                            <a class="btn btn-info btn-sm" href="">Edit</a>
-                            <a class="btn btn-danger btn-sm" href="">Delete</a>
+                            <a href="" class="btn btn-primary" > <i class="fa fa-pencil" aria-hidden="true"></i> Generate PDF </a>
                         </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>
-                            <a class="btn btn-info btn-sm" href="">Edit</a>
-                            <a class="btn btn-danger btn-sm" href="">Delete</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                        <td>
-                            <a class="btn btn-info btn-sm" href="">Edit</a>
-                            <a class="btn btn-danger btn-sm" href="">Delete</a>
-                        </td>
+                    {% endfor %}
                     </tr>
                 </tbody>
             </table>

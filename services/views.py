@@ -69,12 +69,13 @@ def servicesInv(request):
 
 @login_required
 def servicesAirway(request, id):
-
+    inv_id_f = InvoiceLetter.objects.filter(inv_id = id)
     if request.method == 'POST':
         sent_data = request.POST
-        print(sent_data)
+        inv_id_fo = InvoiceLetter.objects.get(inv_id = id)
         try:
             airwaybill(
+                inv_id = inv_id_fo,
                 from_companyname = sent_data.get('from_companyname'),
                 from_personname = sent_data.get('from_personname'),
                 from_address = sent_data.get('from_address'),
@@ -119,10 +120,7 @@ def servicesAirway(request, id):
         
         return redirect('dashboard-products')
     else:
-        invoicedata = InvoiceLetter.objects.filter(inv_id = id)
-        # print(invoicedata)
-        # print(dir(invoicedata))
-        invoicedatas = invoicedata.values()
+        invoicedatas = inv_id_f.values()
         print(invoicedatas)
         data = {}
         for invoice in invoicedatas:
