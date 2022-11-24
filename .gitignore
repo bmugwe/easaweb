@@ -1,3 +1,4 @@
 baseapp/settings.py
 *.pyc
 /*.pyc
+*.pdf
