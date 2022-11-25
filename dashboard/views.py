@@ -16,8 +16,10 @@ def homepage(request):
 
 @login_required
 def index(request):
-    currentInvoice = InvoiceLetter.objects.filter(user_saved_by_id = "1")
-
+    currentuser = request.user
+    userinstance = User.objects.get(username=currentuser)
+    currentInvoice = InvoiceLetter.objects.filter(user_saved_by_id = userinstance.id)
+    
     print(currentInvoice)
     context= {
         "currentInvoice": currentInvoice
@@ -43,9 +45,10 @@ def products(request):
 
 @login_required
 def orders(request):
-    currentInvoice = InvoiceLetter.objects.filter(is_void=False)
-    currentInvoice = currentInvoice.filter(is_deleted=False)
-    currentInvoice = currentInvoice.filter(is_processed=False)
+    currentuser = request.user
+    userinstance = User.objects.get(username=currentuser)
+
+    currentInvoice = InvoiceLetter.objects.filter(is_void=False,is_deleted=False, is_processed=False)
     print(currentInvoice)
     context= {
         "currentInvoice": currentInvoice

@@ -4,8 +4,10 @@ from django.utils import timezone
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
-from fpdf import FPDF
+from reportlab.lib.pagesizes import letter, landscape
+from reportlab.lib.pagesizes import A4
 
 
 
@@ -13,9 +15,11 @@ from .forms import Invoicetemplate, Airwaybill
 from .models import InvoiceLetter, airwaybill
 
 # Create your views here.
+@login_required
 def servicesInv(request):
     now = timezone.now()
-    print(request.method)
+    current_user = request.user
+    user_instance = User.objects.get(username=current_user)
     if request.method == 'POST':
         sent_data = request.POST
         print(sent_data)
@@ -48,7 +52,8 @@ def servicesInv(request):
                 insur_amount = sent_data.get('insur_amount'),
                 nvd = sent_data.get('nvd'),
                 ncv = sent_data.get('ncv'),
-                handling_info = sent_data.get('handling_info')
+                handling_info = sent_data.get('handling_info'),
+                user_saved_by = user_instance
             ).save()
         except Exception as e:
             print(f"Error saving the data:  {e}")
@@ -57,9 +62,9 @@ def servicesInv(request):
         return redirect('services-invoice')
     else:
         data =  {
-            "from_companyname": "Equitexy Business Solutions",
-            "from_personname": 'Boniface Mugwe'
+
         }
+        
         form = Invoicetemplate(data=data)
         context = {
             'form': form,
@@ -122,7 +127,6 @@ def servicesAirway(request, id):
         return redirect('dashboard-products')
     else:
         invoicedatas = inv_id_f.values()
-        print(invoicedatas)
         data = {}
         for invoice in invoicedatas:
             for inv in invoice:
@@ -139,26 +143,8 @@ def servicesAirway(request, id):
         return render(request, 'services/airwaybill.html', context)
 
 
-def print_invoice(request, id):
-    sales = [
-        {"item": "Keyboard", "amount": "$120,00"},
-        {"item": "Mouse", "amount": "$10,00"},
-        {"item": "House", "amount": "$1 000 000,00"},
-    ]
-    pdf = FPDF('P', 'mm', 'A4')
-    pdf.add_page()
-    pdf.set_font('courier', 'B', 16)
-    pdf.cell(40, 10, 'This is what you have sold this month so far:',0,1)
-    pdf.cell(40, 10, '',0,1)
-    pdf.set_font('courier', '', 12)
-    pdf.cell(200, 8, f"{'Item'.ljust(30)} {'Amount'.rjust(20)}", 0, 1)
-    pdf.line(10, 30, 150, 30)
-    pdf.line(10, 38, 150, 38)
-    for line in sales:
-        pdf.cell(200, 8, f"{line['item'].ljust(30)} {line['amount'].rjust(20)}", 0, 1)
-
-    pdf.output('report.pdf', 'F')
-    return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
+def print_invoice(request):
+    
 
 
 def generateAirwaybill(request, id):
@@ -170,8 +156,8 @@ def generateAirwaybill(request, id):
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
     pdf.set_font('courier', 'B', 16)
-    pdf.cell(40, 10, 'This is what you have sold this month so far:',0,1)
-    pdf.cell(40, 10, '',0,1)
+    pdf.cell(40, 10, 'Airway Bill',0,1)
+    pdf.cell(40, 10, '',0,2)
     pdf.set_font('courier', '', 12)
     pdf.cell(200, 8, f"{'Item'.ljust(30)} {'Amount'.rjust(20)}", 0, 1)
     pdf.line(10, 30, 150, 30)
