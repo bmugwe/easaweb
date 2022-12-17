@@ -50,7 +50,7 @@
                                         </td>
                                         <td>
                                             <a href="" class="btn btn-primary m-1" > <i class="fa fa-plane" aria-hidden="true"></i> Track </a>
-                                            <a href="/printinvoice" class="btn btn-primary m-1" > <i class="fa fa-plane" aria-hidden="true"></i> Print Invoice </a>
+                                            <a href="{% url 'invoiceprint' invoice.inv_id %}" class="btn btn-primary m-1" > <i class="fa fa-plane" aria-hidden="true"></i> Print Invoice </a>
                                         </td>
                                     {% endfor %}
                                     </tr>
