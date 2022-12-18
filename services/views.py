@@ -142,16 +142,13 @@ def print_invoice(request, id):
     fromPerson = invoiceDetails["from_personname"]
 
     filename = f"{fromCompany} - {fromPerson}"
-
-    print(invoiceDetails)
     data = {}
-    sales = [
-        {"item": "Keyboard", "amount": "$120,00"},
-        {"item": "Mouse", "amount": "$10,00"},
-        {"item": "House", "amount": "$1 000 000,00"},
-    ]
-    data["sales"] = sales
-    data["name"] = 'Boniface Mugwe'
+    inv_id_f = InvoiceLetter.objects.filter(inv_id=id)
+    invoicedatas = inv_id_f.values()
+    for invoice in invoicedatas:
+            for inv in invoice:
+                data[inv] = invoice.get(inv)
+    
     fsa.CreateInvoice(data,filename=filename)
     return FileResponse(
         open("" + filename + ".pdf", "rb"),

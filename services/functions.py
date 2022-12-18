@@ -8,37 +8,111 @@ pdf = FPDF()
 pdf.add_page()
 
 
+COUNTRIES = {
+    "0": "Select Country",
+    "1": "Burundi",
+    "2": "Democratic Republic of Congo",
+    "3": "Kenya",
+    "4": "Rwanda",
+    "5": "South Sudan",
+    "6": "Tanzania",
+    "7": "Uganda",
+}
+
+KIND_OF_PACKAGE = {
+    "0": "Select Package Kind",
+    "1": "Cardboard/Fiberboard",
+    "2": "Bagged Cargo",
+    "3": "Wooden Cases",
+    "4": "Wooden Crates",
+    "5": "Steel Drums",
+    "6": "Bales",
+    "7": "Palletizing Cargo",
+    "8": "Containers",
+}
+
+
 # Function to create the Airway bill  Invoice
 def CreateInvoice(array, filename):
     # pdf.set_margins(0, 0, 0)
     pdf.set_font("Arial", "B", 10)
-    pdf.cell(90, 6, f"Shipper's Name and Address {array['name']}")
-    pdf.cell(90, 6, "Company heading", ln=1)
+
+    pdf.cell(180, 2, f"Shipper's Name and Address ")
     pdf.set_font("Arial", "B", 6)
-    pdf.cell(0, 2, "", ln=1)
+    pdf.cell(180, 2, "", ln=1)
+    # Save top coordinate
+    top = pdf.y
 
-    pdf.multi_cell(180, 6, "Shipper's \n ...... \n .......... \n ......... ", border=1,align='R')
-    # pdf.cell(90, 6, "Company heading")
-    pdf.cell(50, 16, "Consignee", border=1)
-    pdf.cell(
+    # Calculate x position of next cell
+    offset = pdf.x + 90
+
+    pdf.multi_cell(
         90,
-        16,
-        "You are hereby requested and authorised upon receipt of ........",
-        ln=1,
+        3,
+        f"""Shipper's:  
+            Name: {array['from_personname']},
+            P.O. Box : {array['from_address']},
+            City: {array['from_sendertown']},
+            Contact: {array['from_emailaddress']} - {array['from_emailaddress']},
+        """,
         border=1,
+        align="L",
     )
+    # Reset y coordinate
+    pdf.y = top
 
-    pdf.cell(90, 16, "")
+    # Move to computed offset
+    pdf.x = offset
+
+    pdf.multi_cell(
+        90,
+        12,
+        f"""   
+                                Company Header: 
+            You are hereby requested and authorised upon receipt of the consignment described herein to prepare and sign the 
+            Air Waybill and other necessary documents on our behalf and dispatch the consignment in accordance with your
+            Condition of Contract            
+            I certify that the contents of this consignment are properly identified by name. Insofar as any part of the 
+            consigment contains dangerous goods, such part is in proper condition for carriage by air according to the 
+            applicable Dangerous Goods Regulations.
+
+        """,
+        border=1,
+        align="L",
+    )
+    pdf.cell(0, 1, "", ln=1)
+    pdf.y = top + 25
+
+    pdf.multi_cell(
+        90,
+        3,
+        f"""Consignee: 
+            Name: {array['to_consigneeename']},
+            P.O. Box : {array['to_address']},
+            City: {array['to_receivertown']},
+        """,
+        border=1,
+        align="L",
+    )
+    pdf.cell(0, 1, "", ln=1)
+
     pdf.cell(
-        90, 16, "I certify thata the contents of this consignment.....", ln=1, border=1
+        45, 16, f"Airport of Departure: {COUNTRIES[array['from_countries']]}", border=1
     )
-
-    pdf.cell(45, 16, "Airport of Departure.", border=1)
-    pdf.cell(45, 16, "Airport of Destination.", border=1)
+    pdf.cell(
+        45, 16, f"Airport of Destination: {COUNTRIES[array['to_countries']]}", border=1
+    )
     pdf.cell(90, 16, "", ln=1)
     pdf.cell(90, 16, "REQUESTED ROUTING", border=1, ln=1)
     pdf.cell(90, 16, "REQUESTED BOOKING", border=1, ln=1)
     pdf.cell(180, 1, "", border=1, ln=1)
+    pdf.cell(
+        180,
+        16,
+        "MARKS AND NUMBERS:                                      NO. & KIND OF PKGS:                                  DESC OF GOODS:                                     GROSS WEIGHT MEASUREMENTS:",
+        border=1,
+        ln=1,
+    )
     pdf.cell(
         180,
         16,

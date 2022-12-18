@@ -11,7 +11,7 @@ class InvoiceLetter(models.Model):
     from_companyname = models.CharField(max_length=150)
     from_personname = models.CharField(max_length=150)
     from_address = models.CharField(max_length=150)
-    from_phonenumber = models.CharField(max_length=150)
+    from_emailaddress = models.CharField(max_length=150)
     from_sendertown = models.CharField(max_length=150)
     from_emailaddress = models.CharField(max_length=150)
     to_consigneeename = models.CharField(max_length=150)
