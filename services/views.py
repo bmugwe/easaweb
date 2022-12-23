@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from . import functions as fsa
+
 # from functions import CreateAirwaybill, CreateInvoice
 
 from .forms import Invoicetemplate, Airwaybill
@@ -56,7 +57,7 @@ def servicesInv(request):
         except Exception as e:
             print(f"Error saving the data:  {e}")
 
-        messages.success(request, "The invoice Letter has been addes successfully")
+        messages.success(request, "The invoice Letter has been added successfully")
         return redirect("services-invoice")
     else:
         data = {}
@@ -146,10 +147,10 @@ def print_invoice(request, id):
     inv_id_f = InvoiceLetter.objects.filter(inv_id=id)
     invoicedatas = inv_id_f.values()
     for invoice in invoicedatas:
-            for inv in invoice:
-                data[inv] = invoice.get(inv)
-    
-    fsa.CreateInvoice(data,filename=filename)
+        for inv in invoice:
+            data[inv] = invoice.get(inv)
+
+    fsa.CreateInvoice(data, filename=filename)
     return FileResponse(
         open("" + filename + ".pdf", "rb"),
         as_attachment=True,
@@ -169,7 +170,7 @@ def generateAirwaybill(request, id):
         {"item": "House", "amount": "$1 000 000,00"},
     ]
     data["sales"] = sales
-    
+
     # pdf.output('report.pdf', 'F')
     return FileResponse(
         open("report.pdf", "rb"), as_attachment=True, content_type="application/pdf"

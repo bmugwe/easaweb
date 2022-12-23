@@ -467,6 +467,189 @@ class Airwaybill(forms.Form):
         )
     )
 
+    flight_date = forms.DateField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Disbursement Date"),
+                "class": "form-control",
+                "id": "disbursement_date",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0"
+                # type': 'hidden'
+            }
+        )
+    )
+
+    IATA_NAME = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    FIRST_CARRIER = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    AIRPORT_OF_DEST = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    ROUTING_DEST = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    IATA_CITY = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    Airport_of_departure = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    Airport_of_destination = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    commodity_item_no = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+
+    Carrier_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("From Town"),
+                "class": "form-control",
+                "id": "from_companyname",
+            }
+        )
+    )
+
+    cheargeable_weight = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("From Town"),
+                "class": "form-control",
+                "id": "from_companyname",
+            }
+        )
+    )
+
+    total_charge = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("From Town"),
+                "class": "form-control",
+                "id": "from_companyname",
+            }
+        )
+    )
+
+    other_charge = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("From Town"),
+                "class": "form-control",
+                "id": "from_companyname",
+            }
+        )
+    )
+
+    cheargeable_weight = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("From Town"),
+                "class": "form-control",
+                "id": "from_companyname",
+            }
+        )
+    )
+
+    Requested_routing = forms.ChoiceField(
+        choices=COUNTRIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+   
+
     from_countries = forms.ChoiceField(
         choices=COUNTRIES,
         initial="0",
@@ -582,13 +765,97 @@ class Airwaybill(forms.Form):
         )
     )
 
-    airfreight_charges = forms.ChoiceField(
+    p_airfreight_charges = forms.ChoiceField(
         choices=CHARGEs_TYPE,
         widget=forms.RadioSelect(
             # renderer=RadioCustomRenderer,
             attrs={
                 "data-parsley-required": "true",
                 "id": "airfreight_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    p_valuation_charges = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    p_other_charges_agent = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    p_other_charges_carrier = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    c_airfreight_charges = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "airfreight_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    c_valuation_charges = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    c_other_charges_agent = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
+                # 'data-parsley-errors-container': "#errorfield"
+            }
+        ),
+    )
+
+    c_other_charges_carrier = forms.ChoiceField(
+        choices=CHARGEs_TYPE,
+        widget=forms.RadioSelect(
+            # renderer=RadioCustomRenderer,
+            attrs={
+                "data-parsley-required": "true",
+                "id": "other_charges"
                 # 'data-parsley-errors-container': "#errorfield"
             }
         ),
@@ -645,6 +912,20 @@ class Airwaybill(forms.Form):
     )
 
     handling_info = forms.CharField(
+        required=False,
+        widget=forms.Textarea(
+            attrs={
+                "placeholder": ("Handling Infor and remarks"),
+                "class": "form-control",
+                "rows": "3",
+                "id": "HANDLING_INFO",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group2",
+            }
+        ),
+    )
+
+    other_charges_2 = forms.CharField(
         required=False,
         widget=forms.Textarea(
             attrs={
