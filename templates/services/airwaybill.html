@@ -75,35 +75,106 @@
     <hr />
     <div class="row">
       <div class="col md-6">
-        <h4>From:</h4>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Country From: </label>
-              {{ form.from_countries}}
+              <label for="">Issuing Agent Name: </label>
+              {{ form.IATA_NAME }}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">City From: </label>
-              {{ form.from_town}}
+              <label for="">Agent City: </label>
+              {{ form.IATA_CITY }}
             </div>
           </div>
         </div>
       </div>
       <div class="col md-6">
+        <div class="row">
+          <div class="col md-6">
+            <div class="form-group">
+              <label for="">Agents IATA Code: </label>
+              {{ form.IATA_CODE }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Account No: </label>
+              {{ form.IATA_ACCNO }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% comment %} Carrier information {% endcomment %}
+    <div class="row">
+      <div class="col md-6">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">First carrier: </label>
+              {{ form.IATA_NAME }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Routing information: </label>
+              {{ form.IATA_CITY }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col md-6">
+        <div class="row">
+          <div class="col md-6">
+            <div class="form-group">
+              <label for="">Airport of Destination: </label>
+              {{ form.IATA_CODE }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Flight Date: </label>
+              {{ form.IATA_ACCNO }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% comment %} Cargo Destination and Origin {% endcomment %}
+    <div class="row">
+      <div class="col md-6" style="border: 1px solid black;">
+        <h4>From:</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">Country From: </label>
+              {{ data.from_countries}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="">City From: </label>
+              {{ data.from_town}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col md-6" style="border: 1px solid black;">
         <h4>To:</h4>
         <div class="row">
           <div class="col md-6">
             <div class="form-group">
               <label for="">Country To: </label>
-              {{ form.to_countries}}
+              {{ data.to_countries}}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">City To: </label>
-              {{ form.to_town}}
+              {{ data.to_town }}
             </div>
           </div>
         </div>
@@ -112,7 +183,7 @@
 
     <hr />
     <div class="row">
-      Products to ship:
+      <div class="col-md-12 sub-headers">Products to ship:</div>
       <div class="col-md-12">
         <div class="row">
           <!-- <div class="col-md-1"></div> -->
@@ -121,24 +192,34 @@
               <thead>
                 <tr>
                   <th scope="col">Kind Package</th>
+                  <th scope="col">Quantity</th>
                   <th scope="col">Description</th>
                   <th scope="col">Gross Weight</th>
                   <th scope="col">Measurements</th>
+                  <th scope="col">Rate Class - </br> <small><i>Commodity Item No.</i></small></th>
+                  <th scope="col">Chargeable Weight</th>
+                  <th scope="col">Charges</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ form.package_kind}}</td>
-                  <td>{{ form.quantity }}</td>
+                  <td>{{ data.quantity }}</td>
                   <td>{{ form.description }}</td>
                   <td>{{ form.weight }}</td>
                   <td>
-                    {{ form.length }}
-                    <!-- <br> -->
-                    {{ form.width }}
-                    <!-- <br> -->
-                    {{ form.height }}
+                    {{ data.length }}
+                     *
+                    {{ data.width }}
+                    *
+                    {{ data.height }}
+                  </td>
+                  <td>{{ form.weight }}</td>
+                  <td>{{ form.weight }}</td>
+                  <td>
+                    Rate Charge: {{ form.weight }}
+                    Total: {{ form.weight }}
                   </td>
                   <td>
                     <button type="button" class="btn btn-primary m-1">
@@ -187,7 +268,7 @@
     </div>
     {% endcomment %}
 
-    <div class="row">
+    {% comment %} <div class="row">
       <div class="col-md-4 charges-inv">
         <div class="s-title">AIR FREIGHT CHARGES</div>
         {{form.other_charges}}
@@ -223,13 +304,57 @@
         <div class="s-footer">(mark one to apply) (If Service Available)</div>
       </div>
       <div class="col-md-4 charges-inv">
-        <div class="s-title">INSURANCE - AMOUNT REQUESTED</div>
+        <div class="s-title">AMOUNT OF INSURANCE</div>
         {{form.insur_amount}}
+      </div>
+    </div> {% endcomment %}
+
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table table-light" id="table_charges">
+          <thead>
+            <tr>
+              <th scope="col" class="">#</th>
+              <th scope="col" class="">Weight charge</th>
+              <th scope="col" class="">Valuation charge</th>
+              <th scope="col" class="">Tax</th>
+              <th scope="col" class="">Total Other </br>charges - Agent</th>
+              <th scope="col" class="">Total Other </br>charges - Carrier</th>
+              <th scope="col" class="">Total</th>
+              <th scope="col" class="">Currency Conversion</th>
+              <th scope="col" class="">Charges at Dest</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="">Prepaid</td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+            </tr>
+            <tr>
+              <td class="">Postpaid</td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+              <td class=""></td>
+            </tr>
+          </tbody>
+          </table>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-md-8">
+      {% comment %} <div class="col-md-8">
         <h4>Declared Value:</h4>
         <div class="row">
           <div class="col-md-6 value-inv">
@@ -241,9 +366,9 @@
             {{form.ncv}}
           </div>
         </div>
-      </div>
-      <div class="col-md-4 value-inv">
-        Date : <br />
+      </div> {% endcomment %}
+      <div class="col-md-4">
+        Executed Date : <br />
         {{form.disbursement_date}}
         <div class="row">
           <div class="col-md-2"></div>

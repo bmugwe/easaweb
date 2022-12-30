@@ -131,6 +131,7 @@ def servicesAirway(request, id):
 
         context = {
             "form": form,
+            "data": data
         }
 
         return render(request, "services/airwaybill.html", context)

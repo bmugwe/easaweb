@@ -277,8 +277,12 @@
 </div>
 {% endblock %} {% block lazy_javascript_code %}
 <script>
-jQuery(document).ready(function() { 
-        $( function() 
-            { $('#disbursement_date').datepicker({ format: 'dd-M-yyyy', endDate: 'today'
-}).val(); } ); })
-</script> {% endblock %}
+  jQuery(document).ready(function () {
+    $(function () {
+      $("#disbursement_date")
+        .datepicker({ format: "dd-M-yyyy", endDate: "today" })
+        .val();
+    });
+  });
+</script>
+{% endblock %}

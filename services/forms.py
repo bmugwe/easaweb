@@ -26,9 +26,71 @@ COUNTRIES = (
     ("7", "Uganda"),
 )
 
-CHARGEs_TYPE = (("0", "Prepaid"), ("1", "Collect"))
+CITIES = (
+    ("0", "Select City"),
+    ("1", "Moscow"),
+    ("2", "Milan"),
+    ("3", "London"),
+    ("4", "Dubai"),
+    ("5", "Los Angeles"),
+    ("6", "Paris"),
+    ("7", "Rome"),
+    ("8", "New york"),
+    ("9", "Hong Kong"),
+    ("10", "Mombasa"),
+    ("11", "Nairobi"),
+    ("12", "Kampala"),
+)
+
+IATA_Names = (
+    ("0", "Select Agent"),
+    ("4", "Aegean Airlines"),
+    ("11", "Air Astana"),
+    ("12", "Air Canada"),
+    ("13", "Air China"),
+    ("14", "Air Côte d'Ivoire"),
+    ("15", "AIR DOLOMITI"),
+    ("16", "Air Europa Lineas Aereas"),
+    ("17", "Air France"),
+    ("18", "Air France - KLM"),
+    ("19", "Air Madagascar"),
+    ("20", "AIR MAURITIUS LIMITED"),
+    ("21", "Air New Zealand"),
+    ("22", "Air North"),
+    ("23", "Air Seychelles"),
+    ("24", "AIR TAHITI NUI"),
+    ("25", "Air Tanzania Co Ltd"),
+    ("26", "Aircalin - Air Caledonie International"),
+    ("27", "Airline Reporting Corporation (ARC)"),
+    ("28", "Airline Services Estonia / Icelandair"),
+    ("29", "Airlines Clearing House"),
+    ("30", "Airpas Aviation GmbbH"),
+    ("31", "AirSERBIA"),
+    ("32", "Alaska Airlines"),
+    ("33", "All Nippon Airways"),
+    ("38", "American Airlines"),
+    ("42", "angola airlines - taag"),
+    ("44", "Asiana airline"),
+    ("46", "Atlantic Airways"),
+    ("47", "Atlas Air"),
+    ("52", "Bahamasair Holdings Ltd"),
+    ("55", "Beijing Capital Airlines Co., Ltd"),
+    ("56", "Bek Air"),
+    ("57", "Biman Bangladesh Airlines Ltd"),
+    ("60", "Bringer Air Cargo"),
+    ("61", "British Airways"),
+    ("65", "Caribbean Airlines Limited"),
+    ("66", "Cathay Pacific Airways"),
+)
+
+CHARGEs_TYPE = (
+    ("0", "Select Type"),
+    ("0", "Prepaid"), 
+    ("1", "Collect")
+    )
 
 AWB_CHARGES = (
+    ("0", "Select Charges"),
     ("0", "CHGS code  (Charge Code ):"),
     ("PP", "All Charges Prepaid Cash"),
     ("PX", "All Charges Prepaid Credit"),
@@ -481,7 +543,7 @@ class Airwaybill(forms.Form):
     )
 
     IATA_NAME = forms.ChoiceField(
-        choices=COUNTRIES,
+        choices=IATA_Names,
         initial="0",
         widget=forms.Select(
             attrs={
@@ -491,6 +553,39 @@ class Airwaybill(forms.Form):
                 "data-parsley-group": "group0",
             }
         ),
+    )
+
+    IATA_CITY = forms.ChoiceField(
+        choices=CITIES,
+        initial="0",
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "id": "fromcountry",
+                "data-parsley-required": "true",
+                "data-parsley-group": "group0",
+            }
+        ),
+    )
+
+    IATA_CODE = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("IATA CODE"),
+                "class": "form-control",
+                "id": "iata_code",
+            }
+        )
+    )
+
+    IATA_ACCNO = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("IATA ACC. NO."),
+                "class": "form-control",
+                "id": "iata_accno",
+            }
+        )
     )
 
     FIRST_CARRIER = forms.ChoiceField(
@@ -532,18 +627,6 @@ class Airwaybill(forms.Form):
         ),
     )
 
-    IATA_CITY = forms.ChoiceField(
-        choices=COUNTRIES,
-        initial="0",
-        widget=forms.Select(
-            attrs={
-                "class": "form-control",
-                "id": "fromcountry",
-                "data-parsley-required": "true",
-                "data-parsley-group": "group0",
-            }
-        ),
-    )
 
     Airport_of_departure = forms.ChoiceField(
         choices=COUNTRIES,
@@ -583,7 +666,6 @@ class Airwaybill(forms.Form):
             }
         ),
     )
-
 
     Carrier_name = forms.CharField(
         widget=forms.TextInput(
@@ -647,8 +729,6 @@ class Airwaybill(forms.Form):
             }
         ),
     )
-
-   
 
     from_countries = forms.ChoiceField(
         choices=COUNTRIES,
