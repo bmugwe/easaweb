@@ -10,7 +10,7 @@ from . import functions as fsa
 
 # from functions import CreateAirwaybill, CreateInvoice
 
-from .forms import Invoicetemplate, Airwaybill
+from .forms import Invoicetemplate, Airwaybill, COUNTRIES
 from .models import InvoiceLetter, airwaybill
 
 # Create your views here.
@@ -53,6 +53,39 @@ def servicesInv(request):
                 ncv=sent_data.get("ncv"),
                 handling_info=sent_data.get("handling_info"),
                 user_saved_by=user_instance,
+                Airport_of_departure = data.get('Airport_of_departure'),
+                AIRPORT_OF_DEST = data.get('AIRPORT_OF_DEST'),
+                Airport_of_destination = data.get('Airport_of_destination'),
+                c_airfreight_charges = data.get('c_airfreight_charges'),
+                c_charges_dest = data.get('c_charges_dest'),
+                c_other_charges_agent = data.get('c_other_charges_agent'),
+                c_other_charges_carrier = data.get('c_other_charges_carrier'),
+                c_tax = data.get('c_tax'),
+                c_total_charges = data.get('c_total_charges'),
+                c_valuation_charges = data.get('c_valuation_charges'),
+                Carrier_name = data.get('Carrier_name'),
+                cheargeable_weight = data.get('cheargeable_weight'),
+                commodity_item_no = data.get('commodity_item_no'),
+                FIRST_CARRIER = data.get('FIRST_CARRIER'),
+                IATA_ACCNO = data.get('IATA_ACCNO'),
+                IATA_CITY = data.get('IATA_CITY'),
+                IATA_CODE = data.get('IATA_CODE'),
+                IATA_NAME = data.get('IATA_NAME'),
+                other_charges_2 = data.get('other_charges_2'),
+                p_airfreight_charges = data.get('p_airfreight_charges'),
+                p_charges_dest = data.get('p_charges_dest'),
+                p_currency_conversion = data.get('p_currency_conversion'),
+                p_other_charges_agent = data.get('p_other_charges_agent'),
+                p_other_charges_carrier = data.get('p_other_charges_carrier'),
+                p_tax = data.get('p_tax'),
+                p_total_charges = data.get('p_total_charges'),
+                p_valuation_charges = data.get('p_valuation_charges'),
+                Rate_charge = data.get('Rate_charge'),
+                Requested_routing = data.get('Requested_routing'),
+                ROUTING_DEST = data.get('ROUTING_DEST'),
+                total_charge = data.get('total_charge'),
+                fligh_date = data.get('fligh_date'),
+                accept = data.get('accept'),
             ).save()
         except Exception as e:
             print(f"Error saving the data:  {e}")
@@ -126,6 +159,11 @@ def servicesAirway(request, id):
             for inv in invoice:
                 data[inv] = invoice.get(inv)
 
+        for i in COUNTRIES:
+            if i[0]==data.get('from_countries'):
+                data['from_countries1'] = i[1]
+            if i[0]==data.get('to_countries'):
+                data['to_countries1'] = i[1]
         print(data)
         form = Airwaybill(data=data)
 
@@ -161,18 +199,33 @@ def print_invoice(request, id):
 
 def generateAirwaybill(request, id):
 
-    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id)
+    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id).values()[0]
 
-    print(invoiceDetails)
+    fromCompany = invoiceDetails["from_companyname"]
+    fromPerson = invoiceDetails["from_personname"]
+
+    filename = f"{fromCompany} - {fromPerson}"
     data = {}
+
+    inv_id_f = airwaybill.objects.filter(inv_id=id)
+    invoicedatas = inv_id_f.values()
+    for invoice in invoicedatas:
+        for inv in invoice:
+            data[inv] = invoice.get(inv)
+
+
     sales = [
         {"item": "Keyboard", "amount": "$120,00"},
         {"item": "Mouse", "amount": "$10,00"},
         {"item": "House", "amount": "$1 000 000,00"},
     ]
-    data["sales"] = sales
+    # data["sales"] = sales
+    print(data)
 
     # pdf.output('report.pdf', 'F')
+    fsa.CreateAirwaybill(data, filename=filename)
     return FileResponse(
-        open("report.pdf", "rb"), as_attachment=True, content_type="application/pdf"
+        open("" + filename + ".pdf", "rb"),
+        as_attachment=True,
+        content_type="application/pdf",
     )

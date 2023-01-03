@@ -114,13 +114,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="">First carrier: </label>
-              {{ form.IATA_NAME }}
+              {{ form.FIRST_CARRIER }}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Routing information: </label>
-              {{ form.IATA_CITY }}
+              {{ form.ROUTING_DEST }}
             </div>
           </div>
         </div>
@@ -130,13 +130,13 @@
           <div class="col md-6">
             <div class="form-group">
               <label for="">Airport of Destination: </label>
-              {{ form.IATA_CODE }}
+              {{ form.AIRPORT_OF_DEST }}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="">Flight Date: </label>
-              {{ form.IATA_ACCNO }}
+              {{ form.flight_date }}
             </div>
           </div>
         </div>
@@ -150,13 +150,13 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">Country From: </label>
-              {{ data.from_countries}}
+              <label class="desc_label" for="">Country From: </label>
+              {{ data.from_countries1}}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">City From: </label>
+              <label class="desc_label" for="">City From: </label>
               {{ data.from_town}}
             </div>
           </div>
@@ -167,14 +167,51 @@
         <div class="row">
           <div class="col md-6">
             <div class="form-group">
-              <label for="">Country To: </label>
-              {{ data.to_countries}}
+              <label class="desc_label" for="">Country To: </label>
+              {{ data.to_countries1}}
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="">City To: </label>
+              <label class="desc_label" for="">City To: </label>
               {{ data.to_town }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="display: none;">
+      <div class="col md-6" style="border: 1px solid black;">
+        <h4>From:</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="desc_label" for="">Country From: </label>
+              {{ form.from_countries}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="desc_label" for="">City From: </label>
+              {{ form.from_town}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col md-6" style="border: 1px solid black;">
+        <h4>To:</h4>
+        <div class="row">
+          <div class="col md-6">
+            <div class="form-group">
+              <label class="desc_label" for="">Country To: </label>
+              {{ form.to_countries}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="desc_label" for="">City To: </label>
+              {{ form.to_town }}
             </div>
           </div>
         </div>
@@ -199,10 +236,17 @@
                   <th scope="col">Rate Class - </br> <small><i>Commodity Item No.</i></small></th>
                   <th scope="col">Chargeable Weight</th>
                   <th scope="col">Charges</th>
-                  <th scope="col">Action</th>
+                  {% comment %} <th scope="col">Action</th> {% endcomment %}
                 </tr>
               </thead>
               <tbody>
+                <tr style="display: none;">
+                  <td> {{ form.quantity }} </td>
+                  <td> {{ form.length }} </td>
+                  <td> {{ form.width }} </td>
+                  <td> {{ form.height }} </td>
+
+                </tr>
                 <tr>
                   <td>{{ form.package_kind}}</td>
                   <td>{{ data.quantity }}</td>
@@ -210,25 +254,25 @@
                   <td>{{ form.weight }}</td>
                   <td>
                     {{ data.length }}
-                     *
+                     x
                     {{ data.width }}
-                    *
+                    x
                     {{ data.height }}
                   </td>
-                  <td>{{ form.weight }}</td>
-                  <td>{{ form.weight }}</td>
+                  <td>{{ form.commodity_item_no }}</td>
+                  <td>{{ form.cheargeable_weight }}</td>
                   <td>
-                    Rate Charge: {{ form.weight }}
-                    Total: {{ form.weight }}
+                    Rate Charge: {{ form.Rate_charge }}
+                    Total: {{ form.total_charge }}
                   </td>
-                  <td>
-                    <button type="button" class="btn btn-primary m-1">
+               {% comment %}   <td>
+                     <button type="button" class="btn btn-primary m-1">
                       Add
                     </button>
                     <button type="button" class="btn btn-secondary m-1">
                       Clear
-                    </button>
-                  </td>
+                    </button> 
+                  </td>{% endcomment %}
                 </tr>
               </tbody>
             </table>
@@ -328,25 +372,25 @@
           <tbody>
             <tr>
               <td class="">Prepaid</td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
+              <td class="">{{form.p_airfreight_charges}}</td>
+              <td class="">{{form.p_valuation_charges}}</td>
+              <td class="">{{form.p_tax}}</td>
+              <td class="">{{form.p_other_charges_agent}}</td>
+              <td class="">{{form.p_other_charges_carrier}}</td>
+              <td class="">{{form.p_total_charges}}</td>
+              <td class="">{{form.p_currency_conversion}}</td>
+              <td class="">{{form.p_charges_dest}}</td>
             </tr>
             <tr>
               <td class="">Postpaid</td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
-              <td class=""></td>
+              <td class="">{{form.p_airfreight_charges}}</td>
+              <td class="">{{form.c_valuation_charges}}</td>
+              <td class="">{{form.c_tax}}</td>
+              <td class="">{{form.c_other_charges_agent}}</td>
+              <td class="">{{form.c_other_charges_carrier}}</td>
+              <td class="">{{form.c_total_charges}}</td>
+              <td class="">{{form.p_currency_conversion}}</td>
+              <td class="">{{form.c_charges_dest}}</td>
             </tr>
           </tbody>
           </table>
@@ -403,6 +447,6 @@
 <script>
 jQuery(document).ready(function() { 
         $( function() 
-            { $('input[name="disbursement_date"]').datepicker({ format: 'dd-M-yyyy', endDate: 'today'
+            { $('input[name="disbursement_date"], input[name="flight_date"]').datepicker({ format: 'dd-M-yyyy', endDate: 'today'
 }).val(); } ); })
 </script> {% endblock %}

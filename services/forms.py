@@ -116,7 +116,16 @@ AWB_CHARGES = (
     ("PF", "Partial Prepaid Credit Card - Partial Collect Credit Card"),
 )
 
+AIRPORTS = (
+    ("0", "Select Airport"),
+    ("1", "Jomo Kenyatta International Airport"),
+    ("1", "Moi International Airport"),
+)
 
+RATE_CLASS = (
+    ("0", "Select Item No."),
+    ("1", "Perishable Goods"),
+)
 class Invoicetemplate(forms.Form):
     from_companyname = forms.CharField(
         widget=forms.TextInput(
@@ -420,6 +429,7 @@ class Invoicetemplate(forms.Form):
 
 
 class Airwaybill(forms.Form):
+
     from_companyname = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -534,7 +544,7 @@ class Airwaybill(forms.Form):
             attrs={
                 "placeholder": ("Disbursement Date"),
                 "class": "form-control",
-                "id": "disbursement_date",
+                "id": "flight_date",
                 "data-parsley-required": "true",
                 "data-parsley-group": "group0"
                 # type': 'hidden'
@@ -602,7 +612,7 @@ class Airwaybill(forms.Form):
     )
 
     AIRPORT_OF_DEST = forms.ChoiceField(
-        choices=COUNTRIES,
+        choices=AIRPORTS,
         initial="0",
         widget=forms.Select(
             attrs={
@@ -655,12 +665,12 @@ class Airwaybill(forms.Form):
     )
 
     commodity_item_no = forms.ChoiceField(
-        choices=COUNTRIES,
+        choices=RATE_CLASS,
         initial="0",
         widget=forms.Select(
             attrs={
                 "class": "form-control",
-                "id": "fromcountry",
+                "id": "commodity_item_no",
                 "data-parsley-required": "true",
                 "data-parsley-group": "group0",
             }
@@ -670,9 +680,9 @@ class Airwaybill(forms.Form):
     Carrier_name = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": ("From Town"),
+                "placeholder": ("Carrier_name"),
                 "class": "form-control",
-                "id": "from_companyname",
+                "id": "Carrier_name",
             }
         )
     )
@@ -680,32 +690,34 @@ class Airwaybill(forms.Form):
     cheargeable_weight = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": ("From Town"),
+                "placeholder": ("Chargeable weight"),
                 "class": "form-control",
-                "id": "from_companyname",
+                "id": "cheargeable_weight",
             }
         )
     )
+
+    Rate_charge = forms.CharField(
+            widget=forms.TextInput(
+                attrs={
+                    "placeholder": ("Rate_charge"),
+                    "class": "form-control",
+                    "id": "Rate_charge",
+                }
+            )
+        )
 
     total_charge = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder": ("From Town"),
+                "placeholder": ("total_charge"),
                 "class": "form-control",
-                "id": "from_companyname",
+                "id": "total_charge",
             }
         )
     )
 
-    other_charge = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": ("From Town"),
-                "class": "form-control",
-                "id": "from_companyname",
-            }
-        )
-    )
+    
 
     cheargeable_weight = forms.CharField(
         widget=forms.TextInput(
@@ -845,112 +857,152 @@ class Airwaybill(forms.Form):
         )
     )
 
-    p_airfreight_charges = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_airfreight_charges = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "airfreight_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Weight Charge"),
+                "class": "form-control",
+                "id": "weight_charge",
             }
-        ),
+        )
     )
 
-    p_valuation_charges = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_valuation_charges = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Valuation Charges"),
+                "class": "form-control",
+                "id": "valuation_charges",
             }
-        ),
+        )
     )
 
-    p_other_charges_agent = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_tax = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Tax"),
+                "class": "form-control",
+                "id": "prepaid_tax",
             }
-        ),
+        )
     )
 
-    p_other_charges_carrier = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_other_charges_agent = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Other Charges Agent"),
+                "class": "form-control",
+                "id": "others_c_agent",
             }
-        ),
+        )
     )
 
-    c_airfreight_charges = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_other_charges_carrier = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "airfreight_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Other Charges Carrier"),
+                "class": "form-control",
+                "id": "others_c_carrier",
             }
-        ),
+        )
+    )
+    p_total_charges = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Prepaid Total"),
+                "class": "form-control",
+                "id": "prepaid_total",
+            }
+        )
+    )
+    p_currency_conversion = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Currency Conversion"),
+                "class": "form-control",
+                "id": "currency_conversion",
+            }
+        )
     )
 
-    c_valuation_charges = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    p_charges_dest = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Prepaid Total"),
+                "class": "form-control",
+                "id": "prepaid_total",
             }
-        ),
+        )
     )
 
-    c_other_charges_agent = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    c_airfreight_charges = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Height (M)"),
+                "class": "form-control",
+                "id": "height",
             }
-        ),
+        )
     )
 
-    c_other_charges_carrier = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    c_valuation_charges = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Height (M)"),
+                "class": "form-control",
+                "id": "height",
             }
-        ),
+        )
     )
 
-    other_charges = forms.ChoiceField(
-        choices=CHARGEs_TYPE,
-        widget=forms.RadioSelect(
-            # renderer=RadioCustomRenderer,
+    c_tax = forms.CharField(
+        widget=forms.TextInput(
             attrs={
-                "data-parsley-required": "true",
-                "id": "other_charges"
-                # 'data-parsley-errors-container': "#errorfield"
+                "placeholder": ("Tax"),
+                "class": "form-control",
+                "id": "postpaid_tax",
             }
-        ),
+        )
+    )
+
+    c_other_charges_agent = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Postpaid Other charge agent"),
+                "class": "form-control",
+                "id": "postpaid_oc_agent",
+            }
+        )
+    )
+
+    c_other_charges_carrier = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Postpaid Other charge carrier"),
+                "class": "form-control",
+                "id": "postpaid_o_charges",
+            }
+        )
+    )
+
+    c_total_charges = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Prepaid Total"),
+                "class": "form-control",
+                "id": "prepaid_total",
+            }
+        )
+    )
+   
+    c_charges_dest = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": ("Prepaid Total"),
+                "class": "form-control",
+                "id": "prepaid_total",
+            }
+        )
     )
 
     insur_amount = forms.CharField(
