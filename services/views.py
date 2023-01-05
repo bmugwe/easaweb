@@ -7,9 +7,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 from . import functions as fsa
+
 # from functions import CreateAirwaybill, CreateInvoice
 
-from .forms import Invoicetemplate, Airwaybill
+from .forms import Invoicetemplate, Airwaybill, COUNTRIES
 from .models import InvoiceLetter, airwaybill
 
 # Create your views here.
@@ -56,7 +57,7 @@ def servicesInv(request):
         except Exception as e:
             print(f"Error saving the data:  {e}")
 
-        messages.success(request, "The invoice Letter has been addes successfully")
+        messages.success(request, "The invoice Letter has been added successfully")
         return redirect("services-invoice")
     else:
         data = {}
@@ -70,9 +71,15 @@ def servicesInv(request):
 @login_required
 def servicesAirway(request, id):
     inv_id_f = InvoiceLetter.objects.filter(inv_id=id)
+    current_user = request.user
+    user_instance = User.objects.get(username=current_user)
     if request.method == "POST":
         sent_data = request.POST
         inv_id_fo = InvoiceLetter.objects.get(inv_id=id)
+        if((sent_data.get('accept')) == 'on'):
+            accept_status = True
+        else:
+            accept_status = False
         try:
             airwaybill(
                 inv_id=inv_id_fo,
@@ -104,7 +111,40 @@ def servicesAirway(request, id):
                 nvd=sent_data.get("nvd"),
                 ncv=sent_data.get("ncv"),
                 handling_info=sent_data.get("handling_info"),
-                user_saved_by_id="1",
+                user_saved_by_id=user_instance.id,
+                Airport_of_departure = sent_data.get('Airport_of_departure'),
+                AIRPORT_OF_DEST = sent_data.get('AIRPORT_OF_DEST'),
+                Airport_of_destination = sent_data.get('Airport_of_destination'),
+                c_airfreight_charges = sent_data.get('c_airfreight_charges'),
+                c_charges_dest = sent_data.get('c_charges_dest'),
+                c_other_charges_agent = sent_data.get('c_other_charges_agent'),
+                c_other_charges_carrier = sent_data.get('c_other_charges_carrier'),
+                c_tax = sent_data.get('c_tax'),
+                c_total_charges = sent_data.get('c_total_charges'),
+                c_valuation_charges = sent_data.get('c_valuation_charges'),
+                Carrier_name = sent_data.get('Carrier_name'),
+                cheargeable_weight = sent_data.get('cheargeable_weight'),
+                commodity_item_no = sent_data.get('commodity_item_no'),
+                FIRST_CARRIER = sent_data.get('FIRST_CARRIER'),
+                IATA_ACCNO = sent_data.get('IATA_ACCNO'),
+                IATA_CITY = sent_data.get('IATA_CITY'),
+                IATA_CODE = sent_data.get('IATA_CODE'),
+                IATA_NAME = sent_data.get('IATA_NAME'),
+                other_charges_2 = sent_data.get('other_charges_2'),
+                p_airfreight_charges = sent_data.get('p_airfreight_charges'),
+                p_charges_dest = sent_data.get('p_charges_dest'),
+                p_currency_conversion = sent_data.get('p_currency_conversion'),
+                p_other_charges_agent = sent_data.get('p_other_charges_agent'),
+                p_other_charges_carrier = sent_data.get('p_other_charges_carrier'),
+                p_tax = sent_data.get('p_tax'),
+                p_total_charges = sent_data.get('p_total_charges'),
+                p_valuation_charges = sent_data.get('p_valuation_charges'),
+                Rate_charge = sent_data.get('Rate_charge'),
+                Requested_routing = sent_data.get('Requested_routing'),
+                ROUTING_DEST = sent_data.get('ROUTING_DEST'),
+                total_charge = sent_data.get('total_charge'),
+                flight_date = sent_data.get('flight_date'),
+                accept = accept_status,
             ).save()
 
             invoice_p = InvoiceLetter.objects.get(inv_id=id)
@@ -125,11 +165,17 @@ def servicesAirway(request, id):
             for inv in invoice:
                 data[inv] = invoice.get(inv)
 
+        for i in COUNTRIES:
+            if i[0]==data.get('from_countries'):
+                data['from_countries1'] = i[1]
+            if i[0]==data.get('to_countries'):
+                data['to_countries1'] = i[1]
         print(data)
         form = Airwaybill(data=data)
 
         context = {
             "form": form,
+            "data": data
         }
 
         return render(request, "services/airwaybill.html", context)
@@ -142,17 +188,14 @@ def print_invoice(request, id):
     fromPerson = invoiceDetails["from_personname"]
 
     filename = f"{fromCompany} - {fromPerson}"
-
-    print(invoiceDetails)
     data = {}
-    sales = [
-        {"item": "Keyboard", "amount": "$120,00"},
-        {"item": "Mouse", "amount": "$10,00"},
-        {"item": "House", "amount": "$1 000 000,00"},
-    ]
-    data["sales"] = sales
-    data["name"] = 'Boniface Mugwe'
-    fsa.CreateInvoice(data,filename=filename)
+    inv_id_f = InvoiceLetter.objects.filter(inv_id=id)
+    invoicedatas = inv_id_f.values()
+    for invoice in invoicedatas:
+        for inv in invoice:
+            data[inv] = invoice.get(inv)
+
+    fsa.CreateInvoice(data, filename=filename)
     return FileResponse(
         open("" + filename + ".pdf", "rb"),
         as_attachment=True,
@@ -162,18 +205,33 @@ def print_invoice(request, id):
 
 def generateAirwaybill(request, id):
 
-    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id)
+    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id).values()[0]
 
-    print(invoiceDetails)
+    fromCompany = invoiceDetails["from_companyname"]
+    fromPerson = invoiceDetails["from_personname"]
+
+    filename = f"{fromCompany} - {fromPerson}"
     data = {}
+
+    inv_id_f = airwaybill.objects.filter(inv_id=id)
+    invoicedatas = inv_id_f.values()
+    for invoice in invoicedatas:
+        for inv in invoice:
+            data[inv] = invoice.get(inv)
+
+
     sales = [
         {"item": "Keyboard", "amount": "$120,00"},
         {"item": "Mouse", "amount": "$10,00"},
         {"item": "House", "amount": "$1 000 000,00"},
     ]
-    data["sales"] = sales
-    
+    # data["sales"] = sales
+    print(data)
+
     # pdf.output('report.pdf', 'F')
+    fsa.CreateAirwaybill(data, filename=filename)
     return FileResponse(
-        open("report.pdf", "rb"), as_attachment=True, content_type="application/pdf"
+        open("" + filename + ".pdf", "rb"),
+        as_attachment=True,
+        content_type="application/pdf",
     )

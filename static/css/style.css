@@ -1066,3 +1066,25 @@ body{
 	border: solid 1px;
 	padding: 5px;
 }
+
+.sub-headers {
+	background-color: #000;
+	color: white;
+	border-radius: 20px;
+}
+
+#table_charges tr {
+	border-radius: 5px;
+}
+
+#table_charges th {
+	border: 2px solid black;
+}
+
+#table_charges td {
+	border: 1px solid black ;
+}
+
+.desc_label {
+	font-weight: bolder;
+}
