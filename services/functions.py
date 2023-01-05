@@ -35,13 +35,13 @@ KIND_OF_PACKAGE = {
 # Function to create the Airway bill  Invoice
 def CreateInvoice(array, filename):
     # pdf.set_margins(0, 0, 0)
-    airfreight_prepaid  = ""
+    airfreight_prepaid = ""
     airfreight_postpaid = ""
     others_prepaid = ""
     others_postpaid = ""
-    if array['airfreight_charges'] == 1:
+    if array["airfreight_charges"] == 1:
         airfreight_postpaid = "Y"
-    elif array['other_charges'] == 0:
+    elif array["other_charges"] == 0:
         others_prepaid = "Y"
     else:
         airfreight_postpaid = "Y"
@@ -164,8 +164,20 @@ def CreateInvoice(array, filename):
     pdf.cell(60, 4, f"OTHER CHARGES AT ORIGIN (MARK ON TO APPLY):", align="C", border=1)
     pdf.cell(60, 4, f"INSURANCE - AMMOUNT REQUESTED: ", align="C", ln=1, border=1)
 
-    pdf.cell(60, 4, f"[ {airfreight_prepaid} ] PREPAID       [ {airfreight_postpaid} ] COLLECT", align="C", border=1)
-    pdf.cell(60, 4, f"[ {others_prepaid} ] PREPAID       [ {others_postpaid} ] COLLECT", align="C", border=1)
+    pdf.cell(
+        60,
+        4,
+        f"[ {airfreight_prepaid} ] PREPAID       [ {airfreight_postpaid} ] COLLECT",
+        align="C",
+        border=1,
+    )
+    pdf.cell(
+        60,
+        4,
+        f"[ {others_prepaid} ] PREPAID       [ {others_postpaid} ] COLLECT",
+        align="C",
+        border=1,
+    )
     pdf.cell(60, 4, f"KES {array['insur_amount']} ", align="C", ln=1, border=1)
     pdf.cell(0, 2, "", ln=1)
     pdf.set_font("Arial", "B", 8)
@@ -184,12 +196,15 @@ def CreateInvoice(array, filename):
     pdf.cell(90, 4, "HANDLING INFORMATION AND REMARKS", border=1)
     pdf.cell(90, 4, "", border=1, ln=1)
     pdf.cell(90, 40, f"{array['handling_info']}", border=1)
-    pdf.multi_cell(90, 10, 
-                f"""
+    pdf.multi_cell(
+        90,
+        10,
+        f"""
                 DATE: {array['timestamp_created']}
                 SIGNATURE: .....Boniface.....
-                """, 
-                border=1)
+                """,
+        border=1,
+    )
 
     pdf.output(f"{filename}.pdf", "F")
 
@@ -200,7 +215,7 @@ def CreateInvoice(array, filename):
 def CreateAirwaybill(array, filename):
     # pdf.set_margins(0, 0, 0)
     print(array)
-    airfreight_prepaid  = ""
+    airfreight_prepaid = ""
     airfreight_postpaid = ""
     others_prepaid = ""
     others_postpaid = ""
@@ -213,15 +228,15 @@ def CreateAirwaybill(array, filename):
     #     others_postpaid = "Y"
     pdf.set_font("Arial", "B", 10)
 
-    pdf.cell(180, 2, f"Shipper's Name and Address ")
+    pdf.cell(180, 3, f"Airway Bill", align="c")
     pdf.set_font("Arial", "B", 6)
     pdf.cell(180, 2, "", ln=1)
     # Save top coordinate
-    top = pdf.y
+    top = pdf.y + 3
 
     # Calculate x position of next cell
     offset = pdf.x + 90
-
+    pdf.cell(90, 3, ln=1)
     pdf.multi_cell(
         90,
         4,
@@ -239,31 +254,34 @@ def CreateAirwaybill(array, filename):
 
     # Move to computed offset
     pdf.x = offset
-
+    pdf.set_font("Arial", "B", 5)
     pdf.multi_cell(
         90,
         5,
-        f""" 
-            Company Header: 
-            Company Header: 
-            Company Header: 
-            You are hereby requested and authorised upon receipt of 
-            the consignment described herein to prepare and sign the 
-            Air Waybill and other necessary documents on our 
-            behalf and dispatch the consignment in accordance with your
-            Condition of Contract.           
-            I certify that the contents of this consignment are 
-            properly identified by name. Insofar as any part of the 
-            consigment contains dangerous goods, such part is in 
-            proper condition for carriage by air according to the 
-            applicable Dangerous Goods Regulations.
-        """,
+        f"""Not negotiable:  
+            Air Waybill: (Air Consignment note) 
+
+            issued by 
+            _______________________________________________________________________________
+            Copies 1,2 and 3 of the Air Waybill are originals and have the same validity
+            it is agreed that the goods described herein are accepted in apparent good 
+            order and condition (except as noted) for carriage SUBJECT TO THE
+            CONDITIONS OF CONTRACT ON THE REVERSE HEREOF. ALL GOODS MAY 
+            BE CARRIED BY ANY OTHER MEANS INCLUDING ROAD OR ANY OTHER
+            CARRIER UNLESS SPECIFIC CONTRARY INSTRUCTIONS ARE GIVEN HEREON 
+            BY THE SHIPPER, AND SHIPPERS AGREES THAT THE SHIPMENT MAY BE 
+            CARRIED VIA INTERMEDIATE STOPPING PLACES WHICH THE CARRIER 
+            DEEMS APPROPRIATE. THE SHIPPER'S ATTENTION IS DRAWN TO THE 
+            NOTICE CONCERNING CARRIER'S LIMITATION OF LIABILITY. Shipper 
+            may increase such limitation of liability bydeclaring a higher value for 
+            carriage and paying a supplemental charge if required.""",
         border=1,
-        align="c",
+        align="l",
     )
+
     pdf.cell(0, 1, "", ln=1)
     pdf.y = top + 24
-
+    pdf.set_font("Arial", "B", 5)
     pdf.multi_cell(
         90,
         4,
@@ -277,19 +295,63 @@ def CreateAirwaybill(array, filename):
     )
     pdf.cell(0, 1, "", ln=1)
 
+    pdf.cell(90, 4, f"Issuing Carrier's Agent Name and City", border=1, ln=1)
     pdf.cell(
-        45, 10, f"Airport of Departure: {COUNTRIES[array['from_countries']]}", border=1
+        90,
+        4,
+        f"Airport of Destination: {COUNTRIES[array['to_countries']]}",
+        border=1,
+        ln=1,
     )
-    pdf.cell(
-        45, 10, f"Airport of Destination: {COUNTRIES[array['to_countries']]}", border=1
-    )
-    pdf.cell(90, 10, "", ln=1)
-    pdf.cell(90, 10, "REQUESTED ROUTING", border=1, ln=1)
-    pdf.cell(90, 10, "REQUESTED BOOKING", border=1, ln=1)
 
-    pdf.set_font("Arial", "B", 6)
+    pdf.cell(45, 4, f"Agent's IATA Code", border=1)
+    pdf.cell(45, 4, f"Account No.", border=1, ln=1)
+
+    pdf.cell(
+        90,
+        4,
+        f"Airport of Destination: {COUNTRIES[array['to_countries']]}",
+        border=1,
+        ln=1,
+    )
+    pdf.cell(
+        90,
+        4,
+        f"Airport of Destination: {COUNTRIES[array['to_countries']]}",
+        border=1,
+        ln=1,
+    )
+
+    pdf.cell(90, 4, f"Accounting Information", border=1, ln=1)
+    pdf.cell(90, 4, f"Reference Number", border=1, ln=1)
+
+    pdf.cell(
+        90,
+        6,
+        f"Airport of Departure (addr. of First Carrier and requested Routing",
+        border=1,
+        ln=1,
+    )
+    pdf.cell(90, 6, f"--------------------------", border=1, ln=1)
+    pdf.set_font("Arial", "B", 5)
     pdf.cell(0, 2, "", ln=1)
     # pdf.cell(0, 10, "", border=2)
+    # START HEADERS
+    pdf.cell(45, 3, f"First Carrier", border=1)
+    pdf.cell(45, 3, f"Routing Information", border=1)
+    pdf.cell(45, 3, f"Airport of Destination", border=1)
+    pdf.cell(45, 3, f"Flight Date", border=1)
+
+    # END OF HEADERS
+    # pdf.cell(0, 2, "", )
+    # START BODY
+    pdf.cell(45, 10, f"{array['quantity']}", border=0)
+    pdf.cell(45, 10, f"{array['quantity']}", border=0)
+    pdf.cell(45, 10, f"{array['quantity']}", border=0)
+    pdf.cell(45, 10, f"{array['quantity']}", border=0, ln=1)
+
+    # END OF BODY
+   
     # START HEADERS
     pdf.cell(30, 3, f"MARKS & NUMBERS", border=1)
     pdf.cell(10, 3, f"NO: ", border=1)
@@ -329,8 +391,20 @@ def CreateAirwaybill(array, filename):
     pdf.cell(60, 4, f"OTHER CHARGES AT ORIGIN (MARK ON TO APPLY):", align="C", border=1)
     pdf.cell(60, 4, f"INSURANCE - AMMOUNT REQUESTED: ", align="C", ln=1, border=1)
 
-    pdf.cell(60, 4, f"[ {airfreight_prepaid} ] PREPAID       [ {airfreight_postpaid} ] COLLECT", align="C", border=1)
-    pdf.cell(60, 4, f"[ {others_prepaid} ] PREPAID       [ {others_postpaid} ] COLLECT", align="C", border=1)
+    pdf.cell(
+        60,
+        4,
+        f"[ {airfreight_prepaid} ] PREPAID       [ {airfreight_postpaid} ] COLLECT",
+        align="C",
+        border=1,
+    )
+    pdf.cell(
+        60,
+        4,
+        f"[ {others_prepaid} ] PREPAID       [ {others_postpaid} ] COLLECT",
+        align="C",
+        border=1,
+    )
     pdf.cell(60, 4, f"KES {array['insur_amount']} ", align="C", ln=1, border=1)
     pdf.cell(0, 2, "", ln=1)
     pdf.set_font("Arial", "B", 8)
@@ -349,11 +423,14 @@ def CreateAirwaybill(array, filename):
     pdf.cell(90, 4, "HANDLING INFORMATION AND REMARKS", border=1)
     pdf.cell(90, 4, "", border=1, ln=1)
     pdf.cell(90, 40, f"{array['handling_info']}", border=1)
-    pdf.multi_cell(90, 10, 
-                f"""
+    pdf.multi_cell(
+        90,
+        10,
+        f"""
                 DATE: {array['timestamp_created']}
                 SIGNATURE: .....Boniface.....
-                """, 
-                border=1)
+                """,
+        border=1,
+    )
 
     pdf.output(f"{filename}.pdf", "F")
