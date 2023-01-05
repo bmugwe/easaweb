@@ -53,39 +53,6 @@ def servicesInv(request):
                 ncv=sent_data.get("ncv"),
                 handling_info=sent_data.get("handling_info"),
                 user_saved_by=user_instance,
-                Airport_of_departure = data.get('Airport_of_departure'),
-                AIRPORT_OF_DEST = data.get('AIRPORT_OF_DEST'),
-                Airport_of_destination = data.get('Airport_of_destination'),
-                c_airfreight_charges = data.get('c_airfreight_charges'),
-                c_charges_dest = data.get('c_charges_dest'),
-                c_other_charges_agent = data.get('c_other_charges_agent'),
-                c_other_charges_carrier = data.get('c_other_charges_carrier'),
-                c_tax = data.get('c_tax'),
-                c_total_charges = data.get('c_total_charges'),
-                c_valuation_charges = data.get('c_valuation_charges'),
-                Carrier_name = data.get('Carrier_name'),
-                cheargeable_weight = data.get('cheargeable_weight'),
-                commodity_item_no = data.get('commodity_item_no'),
-                FIRST_CARRIER = data.get('FIRST_CARRIER'),
-                IATA_ACCNO = data.get('IATA_ACCNO'),
-                IATA_CITY = data.get('IATA_CITY'),
-                IATA_CODE = data.get('IATA_CODE'),
-                IATA_NAME = data.get('IATA_NAME'),
-                other_charges_2 = data.get('other_charges_2'),
-                p_airfreight_charges = data.get('p_airfreight_charges'),
-                p_charges_dest = data.get('p_charges_dest'),
-                p_currency_conversion = data.get('p_currency_conversion'),
-                p_other_charges_agent = data.get('p_other_charges_agent'),
-                p_other_charges_carrier = data.get('p_other_charges_carrier'),
-                p_tax = data.get('p_tax'),
-                p_total_charges = data.get('p_total_charges'),
-                p_valuation_charges = data.get('p_valuation_charges'),
-                Rate_charge = data.get('Rate_charge'),
-                Requested_routing = data.get('Requested_routing'),
-                ROUTING_DEST = data.get('ROUTING_DEST'),
-                total_charge = data.get('total_charge'),
-                fligh_date = data.get('fligh_date'),
-                accept = data.get('accept'),
             ).save()
         except Exception as e:
             print(f"Error saving the data:  {e}")
@@ -104,9 +71,15 @@ def servicesInv(request):
 @login_required
 def servicesAirway(request, id):
     inv_id_f = InvoiceLetter.objects.filter(inv_id=id)
+    current_user = request.user
+    user_instance = User.objects.get(username=current_user)
     if request.method == "POST":
         sent_data = request.POST
         inv_id_fo = InvoiceLetter.objects.get(inv_id=id)
+        if((sent_data.get('accept')) == 'on'):
+            accept_status = True
+        else:
+            accept_status = False
         try:
             airwaybill(
                 inv_id=inv_id_fo,
@@ -138,7 +111,40 @@ def servicesAirway(request, id):
                 nvd=sent_data.get("nvd"),
                 ncv=sent_data.get("ncv"),
                 handling_info=sent_data.get("handling_info"),
-                user_saved_by_id="1",
+                user_saved_by_id=user_instance.id,
+                Airport_of_departure = sent_data.get('Airport_of_departure'),
+                AIRPORT_OF_DEST = sent_data.get('AIRPORT_OF_DEST'),
+                Airport_of_destination = sent_data.get('Airport_of_destination'),
+                c_airfreight_charges = sent_data.get('c_airfreight_charges'),
+                c_charges_dest = sent_data.get('c_charges_dest'),
+                c_other_charges_agent = sent_data.get('c_other_charges_agent'),
+                c_other_charges_carrier = sent_data.get('c_other_charges_carrier'),
+                c_tax = sent_data.get('c_tax'),
+                c_total_charges = sent_data.get('c_total_charges'),
+                c_valuation_charges = sent_data.get('c_valuation_charges'),
+                Carrier_name = sent_data.get('Carrier_name'),
+                cheargeable_weight = sent_data.get('cheargeable_weight'),
+                commodity_item_no = sent_data.get('commodity_item_no'),
+                FIRST_CARRIER = sent_data.get('FIRST_CARRIER'),
+                IATA_ACCNO = sent_data.get('IATA_ACCNO'),
+                IATA_CITY = sent_data.get('IATA_CITY'),
+                IATA_CODE = sent_data.get('IATA_CODE'),
+                IATA_NAME = sent_data.get('IATA_NAME'),
+                other_charges_2 = sent_data.get('other_charges_2'),
+                p_airfreight_charges = sent_data.get('p_airfreight_charges'),
+                p_charges_dest = sent_data.get('p_charges_dest'),
+                p_currency_conversion = sent_data.get('p_currency_conversion'),
+                p_other_charges_agent = sent_data.get('p_other_charges_agent'),
+                p_other_charges_carrier = sent_data.get('p_other_charges_carrier'),
+                p_tax = sent_data.get('p_tax'),
+                p_total_charges = sent_data.get('p_total_charges'),
+                p_valuation_charges = sent_data.get('p_valuation_charges'),
+                Rate_charge = sent_data.get('Rate_charge'),
+                Requested_routing = sent_data.get('Requested_routing'),
+                ROUTING_DEST = sent_data.get('ROUTING_DEST'),
+                total_charge = sent_data.get('total_charge'),
+                flight_date = sent_data.get('flight_date'),
+                accept = accept_status,
             ).save()
 
             invoice_p = InvoiceLetter.objects.get(inv_id=id)

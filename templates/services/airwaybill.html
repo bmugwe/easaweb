@@ -383,7 +383,7 @@
             </tr>
             <tr>
               <td class="">Postpaid</td>
-              <td class="">{{form.p_airfreight_charges}}</td>
+              <td class="">{{form.c_airfreight_charges}}</td>
               <td class="">{{form.c_valuation_charges}}</td>
               <td class="">{{form.c_tax}}</td>
               <td class="">{{form.c_other_charges_agent}}</td>
@@ -447,6 +447,6 @@
 <script>
 jQuery(document).ready(function() { 
         $( function() 
-            { $('input[name="disbursement_date"], input[name="flight_date"]').datepicker({ format: 'dd-M-yyyy', endDate: 'today'
+            { $('input[name="disbursement_date"], input[name="flight_date"]').datepicker({ format: 'yyyy-mm-dd', endDate: 'today'
 }).val(); } ); })
 </script> {% endblock %}
