@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 class InvoiceLetter(models.Model):
-    inv_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    inv_fk = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     from_companyname = models.CharField(max_length=150)
     from_personname = models.CharField(max_length=150)
     from_address = models.CharField(max_length=150)
@@ -51,12 +51,12 @@ class InvoiceLetter(models.Model):
         db_table = "invoice_letter"
 
     def __unicode__(self):
-        return str(self.inv_id, self.from_companyname)
+        return str(self.inv_fk, self.from_companyname)
 
 
 # class Tracking(models.Model):
 #     tr_id = models.UUIDField(primary_key = True, default=uuid.uuid4,editable=False)
-#     inv_id = models.ForeignKey(InvoicLetter, verbose_name=_("tracker_locate"), on_delete=models.CASCADE)
+#     inv_fk = models.ForeignKey(InvoicLetter, verbose_name=_("tracker_locate"), on_delete=models.CASCADE)
 #     # timestamp_arrived =
 
 
@@ -64,12 +64,12 @@ class InvoiceLetter(models.Model):
 #         db_table = "parcel_tracker"
 
 #     def __unicode__(self):
-#         return str(self.inv_id, self.from_companyname)
+#         return str(self.inv_fk, self.from_companyname)
 
 
 class airwaybill(models.Model):
     awb_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    inv_id = models.ForeignKey(
+    inv_fk = models.ForeignKey(
         InvoiceLetter, verbose_name=("inv_awb_fk"), on_delete=models.CASCADE
     )
     from_companyname = models.CharField(max_length=150)
