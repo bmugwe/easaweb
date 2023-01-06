@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InvoiceLetter',
             fields=[
-                ('inv_id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('inv_fk', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('from_companyname', models.CharField(max_length=150)),
                 ('from_personname', models.CharField(max_length=150)),
                 ('from_address', models.CharField(max_length=150)),
@@ -127,7 +127,7 @@ class Migration(migrations.Migration):
                 ('Requested_routing', models.CharField(default=False, max_length=150, null=True)),
                 ('ROUTING_DEST', models.CharField(default=False, max_length=150)),
                 ('total_charge', models.FloatField(default=0)),
-                ('inv_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.invoiceletter', verbose_name='inv_awb_fk')),
+                ('inv_fk', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='services.invoiceletter', verbose_name='inv_awb_fk')),
                 ('user_saved_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL, verbose_name='inventryuser')),
             ],
             options={
