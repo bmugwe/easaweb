@@ -2,3 +2,6 @@ baseapp/settings.py
 *.pyc
 /*.pyc
 *.pdf
+/venv
+/migrations
+__pycache__

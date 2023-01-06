@@ -11,7 +11,7 @@ from . import functions as fsa
 # from functions import CreateAirwaybill, CreateInvoice
 
 from .forms import Invoicetemplate, Airwaybill, COUNTRIES
-from .models import InvoiceLetter, airwaybill
+from .models import InvoiceLetter , airwaybill
 
 # Create your views here.
 @login_required

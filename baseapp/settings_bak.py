@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-$i78o_y*hyb5&gnrzl$m#p#@z=15j&yp4#1u%fcy_neuion)jv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['38.242.139.32', 'ebs.co.ke']
+ALLOWED_HOSTS = ['38.242.139.32']
 
 
 # Application definition
@@ -41,11 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_fastdev',
     'dashboard', #.app.DashboardConfig',
     'user',
-    'crispy_forms',
-    'services'
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -127,9 +125,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 STATIC_URL = 'static/'
 
 # Default primary key field type
