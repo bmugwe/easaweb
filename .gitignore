@@ -3,5 +3,4 @@ baseapp/settings.py
 /*.pyc
 *.pdf
 /venv
-/migrations
 __pycache__
