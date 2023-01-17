@@ -30,8 +30,8 @@
                         <td>{{invoice.to_town}}</td>
                         <td>{{invoice.timestamp_created}}</td>
                         <td>
-                            <a href="{% url 'services_airway' invoice.inv_fk %}" class="btn btn-primary" > <i class="fa fa-pencil" aria-hidden="true"></i> Generate AirwayBill </a>
-                            <a href="{% url 'services_airway' invoice.inv_fk %}" class="btn btn-secondary" > <i class="fa fa-trash" aria-hidden="true"></i> Edit </a>
+                            <a href="{% url 'services_airway' invoice.inv_id %}" class="btn btn-primary" > <i class="fa fa-pencil" aria-hidden="true"></i> Generate AirwayBill </a>
+                            <a href="{% url 'services_airway' invoice.inv_id %}" class="btn btn-secondary" > <i class="fa fa-trash" aria-hidden="true"></i> Edit </a>
                         </td>
                     {% endfor %}
                     </tr>

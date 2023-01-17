@@ -70,19 +70,19 @@ def servicesInv(request):
 
 @login_required
 def servicesAirway(request, id):
-    inv_fk_f = InvoiceLetter.objects.filter(inv_fk=id)
+    inv_fk_f = InvoiceLetter.objects.filter(inv_id=id)
     current_user = request.user
     user_instance = User.objects.get(username=current_user)
     if request.method == "POST":
         sent_data = request.POST
-        inv_fk_fo = InvoiceLetter.objects.get(inv_fk=id)
+        inv_fk_fo = InvoiceLetter.objects.get(inv_id=id)
         if((sent_data.get('accept')) == 'on'):
             accept_status = True
         else:
             accept_status = False
         try:
             airwaybill(
-                inv_fk=inv_fk_fo,
+                inv_id=inv_id_id,
                 from_companyname=sent_data.get("from_companyname"),
                 from_personname=sent_data.get("from_personname"),
                 from_address=sent_data.get("from_address"),
@@ -147,7 +147,7 @@ def servicesAirway(request, id):
                 accept = accept_status,
             ).save()
 
-            invoice_p = InvoiceLetter.objects.get(inv_fk=id)
+            invoice_p = InvoiceLetter.objects.get(inv_id=id)
             invoice_p.is_processed = True
             invoice_p.save()
 
@@ -182,30 +182,31 @@ def servicesAirway(request, id):
 
 
 def print_invoice(request, id):
-    invoiceDetails = InvoiceLetter.objects.filter(inv_fk=id).values()[0]
+    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id).values()[0]
     # breakpoint()
     fromCompany = invoiceDetails["from_companyname"]
     fromPerson = invoiceDetails["from_personname"]
 
     filename = f"{fromCompany} - {fromPerson}"
     data = {}
-    inv_fk_f = InvoiceLetter.objects.filter(inv_fk=id)
+    inv_fk_f = InvoiceLetter.objects.filter(inv_id=id)
     invoicedatas = inv_fk_f.values()
     for invoice in invoicedatas:
         for inv in invoice:
             data[inv] = invoice.get(inv)
 
-    fsa.CreateInvoice(data, filename=filename)
+    fileresp = fsa.CreateInvoice(data, filename=filename)
     return FileResponse(
-        open("" + filename + ".pdf", "rb"),
+        fileresp,
         as_attachment=True,
         content_type="application/pdf",
+        filename=f'{filename}.pdf'
     )
 
 
 def generateAirwaybill(request, id):
 
-    invoiceDetails = InvoiceLetter.objects.filter(inv_fk=id).values()[0]
+    invoiceDetails = InvoiceLetter.objects.filter(inv_id=id).values()[0]
 
     fromCompany = invoiceDetails["from_companyname"]
     fromPerson = invoiceDetails["from_personname"]
@@ -213,7 +214,7 @@ def generateAirwaybill(request, id):
     filename = f"{fromCompany} - {fromPerson}"
     data = {}
 
-    inv_fk_f = airwaybill.objects.filter(inv_fk=id)
+    inv_fk_f = airwaybill.objects.filter(inv_id=id)
     invoicedatas = inv_fk_f.values()
     for invoice in invoicedatas:
         for inv in invoice:
@@ -229,9 +230,10 @@ def generateAirwaybill(request, id):
     print(data)
 
     # pdf.output('report.pdf', 'F')
-    fsa.CreateAirwaybill(data, filename=filename)
+    pdfair = fsa.CreateAirwaybill(data, filename=filename)
     return FileResponse(
-        open("" + filename + ".pdf", "rb"),
+        pdfair,
         as_attachment=True,
         content_type="application/pdf",
+        filename=f'{filename}.pdf'
     )

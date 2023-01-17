@@ -67,7 +67,7 @@
                         <td>{{invoice.to_town}}</td>
                         <td>{{invoice.timestamp_created}}</td>
                         <td>
-                            <a href="{% url 'generate_airwaybill' invoice.inv_fk_id %}" class="btn btn-primary" > <i class="fa fa" aria-hidden="true"></i> Generate PDF </a>
+                            <a href="{% url 'generate_airwaybill' invoice.inv_id_id %}" class="btn btn-primary" > <i class="fa fa" aria-hidden="true"></i> Generate PDF </a>
                         </td>
                     {% endfor %}
                     </tr>

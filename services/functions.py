@@ -3,9 +3,9 @@ from django.db import connection
 from django.core.cache import cache
 
 from fpdf import FPDF
+import io
+#buffer = io.BytesIO()
 
-pdf = FPDF()
-pdf.add_page()
 
 
 COUNTRIES = {
@@ -34,7 +34,10 @@ KIND_OF_PACKAGE = {
 
 # Function to create the Airway bill  Invoice
 def CreateInvoice(array, filename):
+    pdf = FPDF()
+    pdf.add_page()
     # pdf.set_margins(0, 0, 0)
+
     airfreight_prepaid = ""
     airfreight_postpaid = ""
     others_prepaid = ""
@@ -205,14 +208,18 @@ def CreateInvoice(array, filename):
                 """,
         border=1,
     )
+    bytestring = pdf.output(dest= "S")
+    buffer = io.BytesIO(bytestring)
 
-    pdf.output(f"{filename}.pdf", "F")
+    return buffer
 
 
 # Function to create the Airway bill itself
 
 
 def CreateAirwaybill(array, filename):
+    pdf = FPDF()
+    pdf.add_page()
     # pdf.set_margins(0, 0, 0)
     print(array)
 
@@ -467,4 +474,8 @@ def CreateAirwaybill(array, filename):
 
     
 
-    pdf.output(f"{filename}.pdf", "F")
+    #pdf.output(name = f"{filename}.pdf", dest = "S").encode('latin-1')
+    bytestring = pdf.output(dest= "S")
+    buffer = io.BytesIO(bytestring)
+
+    return buffer
