@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 
 
 class InvoiceLetter(models.Model):
-    inv_fk = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    inv_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     from_companyname = models.CharField(max_length=150)
     from_personname = models.CharField(max_length=150)
     from_address = models.CharField(max_length=150)
@@ -42,7 +42,7 @@ class InvoiceLetter(models.Model):
     is_deleted = models.BooleanField(default=False)
     is_processed = models.BooleanField(default=False)
     user_saved_by = models.ForeignKey(
-        User, verbose_name=("inventryuser"), on_delete=models.CASCADE
+       User, verbose_name=("inventryuser"), on_delete=models.CASCADE
     )
     # assigned_to = models.ForeignKey(User, verbose_name=("assigneduser"), on_delete=models.CASCADE)
     timestamp_updated = models.DateTimeField(auto_now=True)
@@ -51,7 +51,7 @@ class InvoiceLetter(models.Model):
         db_table = "invoice_letter"
 
     def __unicode__(self):
-        return str(self.inv_fk, self.from_companyname)
+        return str(self.inv_id, self.from_companyname)
 
 
 # class Tracking(models.Model):
@@ -69,7 +69,7 @@ class InvoiceLetter(models.Model):
 
 class airwaybill(models.Model):
     awb_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    inv_fk = models.ForeignKey(
+    inv_id = models.ForeignKey(
         InvoiceLetter, verbose_name=("inv_awb_fk"), on_delete=models.CASCADE
     )
     from_companyname = models.CharField(max_length=150)
@@ -148,3 +148,4 @@ class airwaybill(models.Model):
 
     def __unicode__(self):
         return str(self.awb_id, self.from_companyname)
+
